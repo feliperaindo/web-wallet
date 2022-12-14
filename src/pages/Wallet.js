@@ -1,6 +1,6 @@
-import React from 'react';
+import { Component } from 'react';
 
-class Wallet extends React.Component {
+class Wallet extends Component {
   render() {
     return <div>TrybeWallet</div>;
   }
