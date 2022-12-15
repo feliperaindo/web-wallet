@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import login from '../redux/actions';
 import { validateEmail, validatePassword } from '../services/validationInputs';
 
@@ -57,14 +58,16 @@ class Login extends Component {
               value={ inputPassword }
               onChange={ this.onInputChange }
             />
-            <button
-              type="button"
-              data-testid="login-button"
-              disabled={ !(isValidEmail && isValidPassword) }
-              onClick={ this.singIn }
-            >
-              Entrar
-            </button>
+            <Link to="/carteira">
+              <button
+                type="button"
+                data-testid="login-button"
+                disabled={ !(isValidEmail && isValidPassword) }
+                onClick={ this.singIn }
+              >
+                Entrar
+              </button>
+            </Link>
           </label>
         </section>
       </main>
