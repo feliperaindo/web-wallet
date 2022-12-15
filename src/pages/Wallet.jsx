@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
-mapStateToProps = ({ user: { email } }) => ({ email });
-
 class Wallet extends Component {
   render() {
     const { email } = this.props;
@@ -12,6 +10,7 @@ class Wallet extends Component {
     return (
       <>
         <Header email={ email } />
+        <p>{email}</p>
         <div>TrybeWallet</div>
       </>
     );
@@ -25,5 +24,7 @@ Wallet.defaultProps = {
 Wallet.propTypes = {
   email: PropTypes.string,
 };
+
+const mapStateToProps = ({ user: { email } }) => ({ email });
 
 export default connect(mapStateToProps)(Wallet);
