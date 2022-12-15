@@ -1,1 +1,5 @@
-// Esse reducer será responsável por tratar as informações da pessoa usuária
+const INITIAL_STATE = { user: '' };
+
+const userReducer = (state = INITIAL_STATE, action) => (state);
+
+export default userReducer;

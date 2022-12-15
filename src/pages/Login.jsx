@@ -20,6 +20,8 @@ class Login extends Component {
     this.setState({ isValidEmail: checkEmail, isValidPassword: checkPassword });
   };
 
+  singIn = () => 'ola';
+
   render() {
     const { emailInput, inputPassword, isValidEmail, isValidPassword } = this.state;
 
@@ -52,6 +54,7 @@ class Login extends Component {
               type="button"
               data-testid="login-button"
               disabled={ !(isValidEmail && isValidPassword) }
+              onClick={ this.singIn }
             >
               Entrar
             </button>
