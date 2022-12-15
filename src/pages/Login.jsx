@@ -26,7 +26,7 @@ class Login extends Component {
     return (
       <main>
         <section>
-          <img src="" alt="" />
+          <img src="https://pngimg.com/uploads/free/free_PNG90775.png" alt="Logomarca" />
           <label htmlFor="email-input">
             <input
               type="email"
