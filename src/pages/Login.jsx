@@ -1,4 +1,7 @@
 import { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import login from '../redux/actions';
 import { validateEmail, validatePassword } from '../services/validationInputs';
 
 class Login extends Component {
@@ -20,7 +23,11 @@ class Login extends Component {
     this.setState({ isValidEmail: checkEmail, isValidPassword: checkPassword });
   };
 
-  singIn = () => 'ola';
+  singIn = () => {
+    const { dispatch } = this.props;
+    const { emailInput } = this.state;
+    dispatch(login(emailInput));
+  };
 
   render() {
     const { emailInput, inputPassword, isValidEmail, isValidPassword } = this.state;
@@ -65,4 +72,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  dispatch: PropTypes.func,
+}.isRequired;
+
+export default connect()(Login);
