@@ -1,5 +1,6 @@
-import LOGIN from './actionsTypes';
+import { LOGIN, ADD_CURRENCIES } from './actionsTypes';
 
-const login = (email) => ({ type: LOGIN, payload: email });
+export const login = (email) => ({ type: LOGIN, payload: email });
 
-export default login;
+export const addCurrencies = (currencies) => (
+  { type: ADD_CURRENCIES, payload: currencies });

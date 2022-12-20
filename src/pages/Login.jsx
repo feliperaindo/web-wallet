@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import login from '../redux/actions';
+import { login } from '../redux/actions';
 import { validateEmail, validatePassword } from '../services/validationInputs';
 
 class Login extends Component {
