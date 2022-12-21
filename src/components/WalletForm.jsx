@@ -2,22 +2,9 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class WalletForm extends Component {
-  state = {
-    valueInput: 0,
-    descriptionInput: '',
-    currencyInput: '',
-    paymentMethod: '',
-    tag: '',
-  };
-
-  inputChange = ({ target: { value, name } }) => {
-    this.setState({ [name]: value });
-  };
-
   render() {
-    const { valueInput, descriptionInput,
-      currencyInput, paymentMethod, tag } = this.state;
-    const { currencies } = this.props;
+    const { currencies, valueInput, descriptionInput,
+      currencyInput, paymentMethod, tag, inputChange, saveExpense } = this.props;
 
     const currencyOptionsElements = Object.values(currencies).map(({ code, name }) => (
       <option key={ code } value={ code }>{`${code} - ${name}`}</option>
@@ -32,7 +19,7 @@ class WalletForm extends Component {
             id="value-input"
             data-testid="value-input"
             value={ valueInput }
-            onChange={ this.inputChange }
+            onChange={ inputChange }
           />
         </label>
         <label htmlFor="description-input">
@@ -45,7 +32,7 @@ class WalletForm extends Component {
             placeholder="insira a descrição desse gasto aqui"
             rows="2"
             cols="50"
-            onChange={ this.inputChange }
+            onChange={ inputChange }
           />
         </label>
         <select
@@ -53,7 +40,7 @@ class WalletForm extends Component {
           value={ currencyInput }
           id="currency-input"
           data-testid="currency-input"
-          onChange={ this.inputChange }
+          onChange={ inputChange }
         >
           { currencyOptionsElements }
         </select>
@@ -62,7 +49,7 @@ class WalletForm extends Component {
           id="payment-method"
           data-testid="method-input"
           value={ paymentMethod }
-          onChange={ this.inputChange }
+          onChange={ inputChange }
         >
           <option value="cash">Dinheiro</option>
           <option value="credit">Cartão de crédito</option>
@@ -73,7 +60,7 @@ class WalletForm extends Component {
           id="tag"
           data-testid="tag-input"
           value={ tag }
-          onChange={ this.inputChange }
+          onChange={ inputChange }
         >
           <option value="food">Alimentação</option>
           <option value="transport">Transporte</option>
@@ -81,6 +68,7 @@ class WalletForm extends Component {
           <option value="work">Trabalho</option>
           <option value="recreation">Lazer</option>
         </select>
+        <button type="button" onClick={ saveExpense }>Adicionar despesa</button>
       </form>
     );
   }
@@ -88,6 +76,13 @@ class WalletForm extends Component {
 
 WalletForm.propTypes = {
   currencies: PropTypes.object,
+  valueInput: PropTypes.number,
+  descriptionInput: PropTypes.string,
+  currencyInput: PropTypes.string,
+  paymentMethod: PropTypes.string,
+  tag: PropTypes.string,
+  inputChange: PropTypes.func,
+  saveExpense: PropTypes.func,
 }.isRequired;
 
 export default WalletForm;

@@ -1,9 +1,13 @@
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
 export async function requestCurrencies() {
-  const request = await fetch(URL);
-  const currencies = await request.json();
-  return currencies;
+  try {
+    const request = await fetch(URL);
+    const currencies = await request.json();
+    return currencies;
+  } catch (error) {
+    return error;
+  }
 }
 
 export function filterCurrencies(currencies) {

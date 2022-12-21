@@ -2,38 +2,91 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Header, WalletForm } from '../services/ComponentsExport';
+import { addExpense, updateGlobalStateWithCurrencies } from '../redux/actions';
 import { requestCurrencies, filterCurrencies } from '../services/APIServices';
-import { addCurrencies } from '../redux/actions';
 
 class Wallet extends Component {
-  state = { currencies: {} };
+  state = {
+    currencies: {},
+    valueInput: 0,
+    descriptionInput: '',
+    currencyInput: '',
+    paymentMethod: '',
+    tag: '',
+  };
 
   componentDidMount() {
-    this.makeAPIRequest();
+    this.saveResultFromAPI();
   }
 
-  makeAPIRequest = async () => {
+  saveResultFromAPI = async () => {
+    const { dispatch } = this.props;
     const allCurrencies = await requestCurrencies();
     const listOfCurrencies = filterCurrencies(allCurrencies);
     this.setState(
       { currencies: { ...listOfCurrencies } },
-      () => this.updateGlobalState(Object.keys(listOfCurrencies)),
+      () => updateGlobalStateWithCurrencies(dispatch, Object.keys(listOfCurrencies)),
     );
   };
 
-  updateGlobalState = (listOfCurrencies) => {
+  inputChange = ({ target: { value, name } }) => {
+    this.setState({ [name]: value });
+  };
+
+  saveExpense = async () => {
+    const newExpense = await this.newExpenseCreator();
+
     const { dispatch } = this.props;
-    dispatch(addCurrencies(listOfCurrencies));
+
+    dispatch(addExpense(newExpense));
+
+    this.clearState();
+  };
+
+  newExpenseCreator = async () => {
+    const { valueInput, descriptionInput,
+      currencyInput, paymentMethod, tag } = this.state;
+    const { expenses } = this.props;
+
+    return {
+      valueInput,
+      descriptionInput,
+      currencyInput,
+      paymentMethod,
+      tag,
+      id: expenses.length,
+      exchangeRates: await requestCurrencies() };
+  };
+
+  clearState = () => {
+    this.setState({
+      currencies: {},
+      valueInput: 0,
+      descriptionInput: '',
+      currencyInput: '',
+      paymentMethod: '',
+      tag: '',
+    });
   };
 
   render() {
     const { email } = this.props;
-    const { currencies } = this.state;
+    const { currencies, valueInput, descriptionInput,
+      currencyInput, paymentMethod, tag } = this.state;
 
     return (
       <>
         <Header email={ email } />
-        <WalletForm currencies={ currencies } />
+        <WalletForm
+          currencies={ currencies }
+          currencyInput={ currencyInput }
+          valueInput={ valueInput }
+          descriptionInput={ descriptionInput }
+          paymentMethod={ paymentMethod }
+          tag={ tag }
+          inputChange={ this.inputChange }
+          saveExpense={ this.saveExpense }
+        />
       </>
     );
   }
@@ -41,13 +94,24 @@ class Wallet extends Component {
 
 Wallet.defaultProps = {
   email: 'Usuário não logado',
+  expenses: [],
 };
 
 Wallet.propTypes = {
   email: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    valueInput: PropTypes.string,
+    descriptionInput: PropTypes.string,
+    currencyInput: PropTypes.string,
+    paymentMethod: PropTypes.string,
+    tag: PropTypes.string,
+  })),
 };
 
-const mapStateToProps = ({ user: { email } }) => ({ email });
+const mapStateToProps = ({
+  user: { email }, wallet: { expenses },
+}) => ({ email, expenses });
 
 export default connect(mapStateToProps)(Wallet);
