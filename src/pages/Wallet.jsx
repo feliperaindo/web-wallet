@@ -2,12 +2,12 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Header, WalletForm } from '../services/ComponentsExport';
-import { addExpense, updateGlobalStateWithCurrencies } from '../redux/actions';
-import { requestCurrencies, filterCurrencies } from '../services/APIServices';
+import { saveExpense } from '../redux/actions';
+import { allCurrenciesDataRequisition } from '../services/APIServices';
+import { expensesValidator, nameCurrencyValidator } from '../services/PropsValidator';
 
 class Wallet extends Component {
   state = {
-    currencies: {},
     valueInput: 0,
     descriptionInput: '',
     currencyInput: '',
@@ -16,30 +16,18 @@ class Wallet extends Component {
   };
 
   componentDidMount() {
-    this.saveResultFromAPI();
-  }
-
-  saveResultFromAPI = async () => {
     const { dispatch } = this.props;
-    const allCurrencies = await requestCurrencies();
-    const listOfCurrencies = filterCurrencies(allCurrencies);
-    this.setState(
-      { currencies: { ...listOfCurrencies } },
-      () => updateGlobalStateWithCurrencies(dispatch, Object.keys(listOfCurrencies)),
-    );
-  };
+    allCurrenciesDataRequisition(dispatch);
+  }
 
   inputChange = ({ target: { value, name } }) => {
     this.setState({ [name]: value });
   };
 
-  saveExpense = async () => {
-    const newExpense = await this.newExpenseCreator();
-
+  requestToSaveExpense = () => {
+    const newExpense = this.newExpenseCreator();
     const { dispatch } = this.props;
-
-    dispatch(addExpense(newExpense));
-
+    saveExpense(dispatch, newExpense);
     this.clearState();
   };
 
@@ -55,12 +43,11 @@ class Wallet extends Component {
       paymentMethod,
       tag,
       id: expenses.length,
-      exchangeRates: await requestCurrencies() };
+      exchangeRates: {} };
   };
 
   clearState = () => {
     this.setState({
-      currencies: {},
       valueInput: 0,
       descriptionInput: '',
       currencyInput: '',
@@ -70,8 +57,8 @@ class Wallet extends Component {
   };
 
   render() {
-    const { email } = this.props;
-    const { currencies, valueInput, descriptionInput,
+    const { email, currencies, nameCurrencies } = this.props;
+    const { valueInput, descriptionInput,
       currencyInput, paymentMethod, tag } = this.state;
 
     return (
@@ -79,13 +66,14 @@ class Wallet extends Component {
         <Header email={ email } />
         <WalletForm
           currencies={ currencies }
+          nameCurrencies={ nameCurrencies }
           currencyInput={ currencyInput }
           valueInput={ valueInput }
           descriptionInput={ descriptionInput }
           paymentMethod={ paymentMethod }
           tag={ tag }
           inputChange={ this.inputChange }
-          saveExpense={ this.saveExpense }
+          saveExpense={ this.requestToSaveExpense }
         />
       </>
     );
@@ -100,6 +88,8 @@ Wallet.defaultProps = {
 Wallet.propTypes = {
   email: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  nameCurrencies: nameCurrencyValidator.isRequired,
   expenses: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number,
     valueInput: PropTypes.string,
@@ -107,11 +97,12 @@ Wallet.propTypes = {
     currencyInput: PropTypes.string,
     paymentMethod: PropTypes.string,
     tag: PropTypes.string,
+    exchangeRates: expensesValidator,
   })),
 };
 
 const mapStateToProps = ({
-  user: { email }, wallet: { expenses },
-}) => ({ email, expenses });
+  user: { email }, wallet: { expenses, currencies, nameCurrencies },
+}) => ({ email, expenses, currencies, nameCurrencies });
 
 export default connect(mapStateToProps)(Wallet);

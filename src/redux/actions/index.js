@@ -1,12 +1,16 @@
-import { LOGIN, ADD_CURRENCIES, ADD_EXPENSE } from './actionsTypes';
+import { LOGIN, ADD_CURRENCIES, ADD_EXPENSE, ADD_NAME_CURRENCIES } from './actionsTypes';
 
 export const login = (email) => ({ type: LOGIN, payload: email });
 
 export const addCurrencies = (currencies) => (
   { type: ADD_CURRENCIES, payload: currencies });
 
+export const addFullNameCurrencies = (currencies) => (
+  { type: ADD_NAME_CURRENCIES, payload: currencies });
+
 export const addExpense = (newExpense) => ({ type: ADD_EXPENSE, payload: newExpense });
 
-export function updateGlobalStateWithCurrencies(listOfCurrencies) {
-  dispatch(addCurrencies(listOfCurrencies));
-}
+export const saveExpense = async (dispatch, newExpense) => {
+  const actualQuotation = await requestCurrencies();
+  dispatch(addExpense({ ...newExpense, exchangeRates: { ...actualQuotation } }));
+};

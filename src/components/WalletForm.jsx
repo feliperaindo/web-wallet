@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 
 class WalletForm extends Component {
   render() {
-    const { currencies, valueInput, descriptionInput,
+    const { currencies, nameCurrencies, valueInput, descriptionInput,
       currencyInput, paymentMethod, tag, inputChange, saveExpense } = this.props;
 
-    const currencyOptionsElements = Object.values(currencies).map(({ code, name }) => (
-      <option key={ code } value={ code }>{`${code} - ${name}`}</option>
+    const currencyOptionsElements = currencies.map((currency) => (
+      <option
+        key={ currency }
+        value={ currency }
+      >
+        {`${currency} - ${nameCurrencies[currency]}`}
+      </option>
     ));
 
     return (
@@ -75,7 +80,8 @@ class WalletForm extends Component {
 }
 
 WalletForm.propTypes = {
-  currencies: PropTypes.object,
+  currencies: PropTypes.array,
+  nameCurrencies: PropTypes.object,
   valueInput: PropTypes.number,
   descriptionInput: PropTypes.string,
   currencyInput: PropTypes.string,
