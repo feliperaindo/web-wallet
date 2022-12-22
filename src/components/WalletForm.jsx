@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 
 class WalletForm extends Component {
   render() {
-    const { currencies, nameCurrencies, valueInput, descriptionInput,
-      currencyInput, paymentMethod, tag, inputChange, saveExpense } = this.props;
+    const { currencies, nameCurrencies, value, description,
+      currency, method, tag, inputChange, saveExpense } = this.props;
 
-    const currencyOptionsElements = currencies.map((currency) => (
+    const currencyOptionsElements = currencies.map((eachCurrency) => (
       <option
-        key={ currency }
-        value={ currency }
+        key={ eachCurrency }
+        value={ eachCurrency }
       >
-        {`${currency} - ${nameCurrencies[currency]}`}
+        {`${eachCurrency} - ${nameCurrencies[eachCurrency]}`}
       </option>
     ));
 
@@ -20,20 +20,20 @@ class WalletForm extends Component {
         <label htmlFor="value-input">
           <input
             type="number"
-            name="valueInput"
+            name="value"
             id="value-input"
             data-testid="value-input"
-            value={ valueInput }
+            value={ value }
             onChange={ inputChange }
           />
         </label>
         <label htmlFor="description-input">
           <input
             type="textarea"
-            name="descriptionInput"
+            name="description"
             id="description-input"
             data-testid="description-input"
-            value={ descriptionInput }
+            value={ description }
             placeholder="insira a descrição desse gasto aqui"
             rows="2"
             cols="50"
@@ -41,8 +41,8 @@ class WalletForm extends Component {
           />
         </label>
         <select
-          name="currencyInput"
-          value={ currencyInput }
+          name="currency"
+          value={ currency }
           id="currency-input"
           data-testid="currency-input"
           onChange={ inputChange }
@@ -50,15 +50,15 @@ class WalletForm extends Component {
           { currencyOptionsElements }
         </select>
         <select
-          name="paymentMethod"
+          name="method"
           id="payment-method"
           data-testid="method-input"
-          value={ paymentMethod }
+          value={ method }
           onChange={ inputChange }
         >
-          <option value="cash">Dinheiro</option>
-          <option value="credit">Cartão de crédito</option>
-          <option value="debit">Cartão de débito</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão de crédito">Cartão de crédito</option>
+          <option value="Cartão de débito">Cartão de débito</option>
         </select>
         <select
           name="tag"
@@ -67,11 +67,11 @@ class WalletForm extends Component {
           value={ tag }
           onChange={ inputChange }
         >
-          <option value="food">Alimentação</option>
-          <option value="transport">Transporte</option>
-          <option value="health">Saúde</option>
-          <option value="work">Trabalho</option>
-          <option value="recreation">Lazer</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Saúde">Saúde</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Lazer">Lazer</option>
         </select>
         <button type="button" onClick={ saveExpense }>Adicionar despesa</button>
       </form>

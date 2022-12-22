@@ -7,11 +7,11 @@ import { expensesValidator, nameCurrencyValidator } from '../services/PropsValid
 
 class Wallet extends Component {
   state = {
-    valueInput: 0,
-    descriptionInput: '',
-    currencyInput: '',
-    paymentMethod: '',
-    tag: '',
+    value: '',
+    description: '',
+    currency: 'USD',
+    method: 'cash',
+    tag: 'food',
   };
 
   componentDidMount() {
@@ -39,29 +39,29 @@ class Wallet extends Component {
 
   clearState = () => {
     this.setState({
-      valueInput: 0,
-      descriptionInput: '',
-      currencyInput: '',
-      paymentMethod: '',
-      tag: '',
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'cash',
+      tag: 'food',
     });
   };
 
   render() {
-    const { email, currencies, nameCurrencies } = this.props;
-    const { valueInput, descriptionInput,
-      currencyInput, paymentMethod, tag } = this.state;
+    const { email, currencies, nameCurrencies, expenses } = this.props;
+    const { value, description,
+      currency, method, tag } = this.state;
 
     return (
       <>
-        <Header email={ email } />
+        <Header email={ email } expenses={ expenses } />
         <WalletForm
           currencies={ currencies }
           nameCurrencies={ nameCurrencies }
-          currencyInput={ currencyInput }
-          valueInput={ valueInput }
-          descriptionInput={ descriptionInput }
-          paymentMethod={ paymentMethod }
+          currency={ currency }
+          value={ value }
+          description={ description }
+          method={ method }
           tag={ tag }
           inputChange={ this.inputChange }
           saveExpense={ this.requestToSaveExpense }
@@ -81,15 +81,7 @@ Wallet.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   nameCurrencies: nameCurrencyValidator.isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    valueInput: PropTypes.string,
-    descriptionInput: PropTypes.string,
-    currencyInput: PropTypes.string,
-    paymentMethod: PropTypes.string,
-    tag: PropTypes.string,
-    exchangeRates: expensesValidator,
-  })),
+  expenses: expensesValidator,
 };
 
 const mapStateToProps = ({

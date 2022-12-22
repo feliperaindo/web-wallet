@@ -1,15 +1,25 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { expensesValidator } from '../services/PropsValidator';
 
 class Header extends Component {
   state = {
-    total: 0,
     currency: 'BRL',
   };
 
+  calculateTotal = (expenses) => ((expenses.length)
+    ? this.calculatorFunction(expenses)
+    : 0);
+
+  calculatorFunction = (expenses) => expenses.reduce((total, expense) => (
+    total + Number(expense.value)
+     * Number(expense.exchangeRates[expense.currency].ask)), 0).toFixed(2);
+
   render() {
-    const { email } = this.props;
-    const { total, currency } = this.state;
+    const { email, expenses } = this.props;
+    const { currency } = this.state;
+
+    const total = this.calculateTotal(expenses);
 
     return (
       <header>
@@ -23,10 +33,12 @@ class Header extends Component {
 
 Header.defaultProps = {
   email: 'Usuário não logado',
+  expenses: [],
 };
 
 Header.propTypes = {
   email: PropTypes.string,
+  expenses: expensesValidator,
 };
 
 export default Header;

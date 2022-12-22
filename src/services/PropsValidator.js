@@ -16,7 +16,8 @@ export const nameCurrencyValidator = PropTypes.shape({
   ETH: PropTypes.string,
   XRP: PropTypes.string,
 });
-export const expensesValidator = PropTypes.shape({
+
+export const exchangeRates = PropTypes.shape({
   USD: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
@@ -226,3 +227,13 @@ export const expensesValidator = PropTypes.shape({
     create_date: PropTypes.string,
   }),
 });
+
+export const expensesValidator = PropTypes.arrayOf(PropTypes.shape({
+  id: PropTypes.number,
+  valueInput: PropTypes.string,
+  descriptionInput: PropTypes.string,
+  currencyInput: PropTypes.string,
+  paymentMethod: PropTypes.string,
+  tag: PropTypes.string,
+  exchangeRates,
+}));
