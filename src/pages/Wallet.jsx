@@ -2,8 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Header, WalletForm } from '../services/ComponentsExport';
-import { saveExpense } from '../redux/actions';
-import { allCurrenciesDataRequisition } from '../services/APIServices';
+import { allCurrenciesDataRequisition, saveExpense } from '../services/APIServices';
 import { expensesValidator, nameCurrencyValidator } from '../services/PropsValidator';
 
 class Wallet extends Component {
@@ -31,19 +30,11 @@ class Wallet extends Component {
     this.clearState();
   };
 
-  newExpenseCreator = async () => {
-    const { valueInput, descriptionInput,
-      currencyInput, paymentMethod, tag } = this.state;
+  newExpenseCreator = () => {
     const { expenses } = this.props;
-
-    return {
-      valueInput,
-      descriptionInput,
-      currencyInput,
-      paymentMethod,
-      tag,
-      id: expenses.length,
-      exchangeRates: {} };
+    const newExpense = { ...this.state };
+    newExpense.id = expenses.length;
+    return newExpense;
   };
 
   clearState = () => {

@@ -17,7 +17,7 @@ export const nameCurrencyValidator = PropTypes.shape({
   XRP: PropTypes.string,
 });
 export const expensesValidator = PropTypes.shape({
-  USD: {
+  USD: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -29,8 +29,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  USDT: {
+  }),
+  USDT: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -42,8 +42,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  CAD: {
+  }),
+  CAD: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -55,8 +55,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  EUR: {
+  }),
+  EUR: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -68,8 +68,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  GBP: {
+  }),
+  GBP: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -81,8 +81,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  ARS: {
+  }),
+  ARS: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -94,8 +94,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  BTC: {
+  }),
+  BTC: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -107,8 +107,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  LTC: {
+  }),
+  LTC: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -120,8 +120,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  JPY: {
+  }),
+  JPY: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -133,8 +133,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  CHF: {
+  }),
+  CHF: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -146,8 +146,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  AUD: {
+  }),
+  AUD: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -159,8 +159,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  CNY: {
+  }),
+  CNY: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -172,8 +172,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  ILS: {
+  }),
+  ILS: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -185,8 +185,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  ETH: {
+  }),
+  ETH: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -198,8 +198,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  XRP: {
+  }),
+  XRP: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -211,8 +211,8 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
-  DOGE: {
+  }),
+  DOGE: PropTypes.shape({
     code: PropTypes.string,
     codein: PropTypes.string,
     name: PropTypes.string,
@@ -224,5 +224,5 @@ export const expensesValidator = PropTypes.shape({
     ask: PropTypes.string,
     timestamp: PropTypes.string,
     create_date: PropTypes.string,
-  },
+  }),
 });

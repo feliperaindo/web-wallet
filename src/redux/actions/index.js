@@ -9,8 +9,3 @@ export const addFullNameCurrencies = (currencies) => (
   { type: ADD_NAME_CURRENCIES, payload: currencies });
 
 export const addExpense = (newExpense) => ({ type: ADD_EXPENSE, payload: newExpense });
-
-export const saveExpense = async (dispatch, newExpense) => {
-  const actualQuotation = await requestCurrencies();
-  dispatch(addExpense({ ...newExpense, exchangeRates: { ...actualQuotation } }));
-};

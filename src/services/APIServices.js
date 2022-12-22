@@ -1,4 +1,4 @@
-import { addCurrencies, addFullNameCurrencies } from '../redux/actions';
+import { addCurrencies, addFullNameCurrencies, addExpense } from '../redux/actions';
 
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
@@ -10,9 +10,9 @@ function removeUSDT(currencies) {
 }
 
 function getFullNameCurrencies(allCurrencies, listOfCurrencies) {
-  const importantInfo = listOfCurrencies.reduce((info, currency) => (
-    { ...info, currency: allCurrencies[currency].name }), {});
-  return importantInfo;
+  const nameCurrencies = listOfCurrencies.reduce((info, currency) => (
+    { ...info, [currency]: allCurrencies[currency].name }), {});
+  return nameCurrencies;
 }
 
 export async function requestCurrencies() {
@@ -27,8 +27,14 @@ export async function requestCurrencies() {
 
 export async function allCurrenciesDataRequisition(dispatch) {
   const allCurrencies = await requestCurrencies();
-  const listOfCurrencies = removeUSDT(allCurrencies);
+  const listOfCurrencies = Object.keys(removeUSDT(allCurrencies));
   const infoCurrencies = getFullNameCurrencies(allCurrencies, listOfCurrencies);
-  dispatch(addCurrencies(Object.keys(listOfCurrencies)));
+  dispatch(addCurrencies(listOfCurrencies));
   dispatch(addFullNameCurrencies(infoCurrencies));
 }
+
+export const saveExpense = async (dispatch, newExpense) => {
+  const actualQuotation = await requestCurrencies();
+  newExpense.exchangeRates = { ...actualQuotation };
+  dispatch(addExpense(newExpense));
+};
