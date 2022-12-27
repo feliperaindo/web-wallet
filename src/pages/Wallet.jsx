@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Header, WalletForm } from '../services/ComponentsExport';
+import { Header, Table, WalletForm } from '../services/ComponentsExport';
 import { allCurrenciesDataRequisition, saveExpense } from '../services/APIServices';
 import { expensesValidator, nameCurrencyValidator } from '../services/PropsValidator';
 
@@ -66,6 +66,7 @@ class Wallet extends Component {
           inputChange={ this.inputChange }
           saveExpense={ this.requestToSaveExpense }
         />
+        <Table />
       </>
     );
   }
