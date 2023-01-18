@@ -9,12 +9,12 @@ class Table extends Component {
     const infoToPopulate = expenses
       .map(({ description, tag, method, id, value, currency, exchangeRates }) => (
         <tr key={ id }>
-          <td>{description}</td>
-          <td>{tag}</td>
-          <td>{method}</td>
-          <td>{value}</td>
-          <td>{exchangeRates[currency].name}</td>
-          <td>{Number(exchangeRates[currency].ask).toFixed(2)}</td>
+          <td>{ description }</td>
+          <td>{ tag }</td>
+          <td>{ method }</td>
+          <td>{ Number(value).toFixed(2) }</td>
+          <td>{ exchangeRates[currency].name }</td>
+          <td>{ Number(exchangeRates[currency].ask).toFixed(2) }</td>
           <td>{ conversor(value, exchangeRates[currency].ask).toFixed(2) }</td>
           <td>Real</td>
           <button data-testid="delete-btn" type="button">Deletar</button>
