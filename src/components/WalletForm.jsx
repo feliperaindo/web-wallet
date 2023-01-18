@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { nameCurrencyValidator } from '../services/PropsValidator';
 
 class WalletForm extends Component {
   render() {
@@ -80,8 +81,8 @@ class WalletForm extends Component {
 }
 
 WalletForm.propTypes = {
-  currencies: PropTypes.array,
-  nameCurrencies: PropTypes.object,
+  currencies: PropTypes.arrayOf(PropTypes.string),
+  nameCurrencies: nameCurrencyValidator,
   valueInput: PropTypes.number,
   descriptionInput: PropTypes.string,
   currencyInput: PropTypes.string,

@@ -28,7 +28,7 @@ class Wallet extends Component {
     const quotation = await requestCurrencies();
     const newExpense = this.newExpenseCreator();
 
-    newExpense.exchanges = { ...quotation };
+    newExpense.exchangeRates = { ...quotation };
 
     const { dispatch } = this.props;
 
@@ -73,7 +73,10 @@ class Wallet extends Component {
           inputChange={ this.inputChange }
           saveExpense={ this.saveExpense }
         />
-        <Table />
+        <Table
+          nameCurrencies={ nameCurrencies }
+          expenses={ expenses }
+        />
       </>
     );
   }

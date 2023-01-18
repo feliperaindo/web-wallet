@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { calculatorFunction } from '../services/Calculator';
 import { expensesValidator } from '../services/PropsValidator';
 
 class Header extends Component {
@@ -8,12 +9,8 @@ class Header extends Component {
   };
 
   calculateTotal = (expenses) => ((expenses.length)
-    ? this.calculatorFunction(expenses)
+    ? calculatorFunction(expenses)
     : 0);
-
-  calculatorFunction = (expenses) => expenses.reduce((total, expense) => (
-    total + Number(expense.value)
-     * Number(expense.exchanges[expense.currency].ask)), 0).toFixed(2);
 
   render() {
     const { email, expenses } = this.props;
