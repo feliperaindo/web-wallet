@@ -22,7 +22,7 @@ class Header extends Component {
       <header>
         <section data-testid="email-field">{ email }</section>
         <span data-testid="header-currency-field">{ currency }</span>
-        <span data-testid="total-field">{ total }</span>
+        <span data-testid="total-field">{ Number(total).toFixed(2) }</span>
       </header>
     );
   }

@@ -1,10 +1,11 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { conversor } from '../services/Calculator';
 import { expensesValidator } from '../services/PropsValidator';
 
 class Table extends Component {
   render() {
-    const { expenses } = this.props;
+    const { expenses, deleteExpense } = this.props;
 
     const infoToPopulate = expenses
       .map(({ description, tag, method, id, value, currency, exchangeRates }) => (
@@ -17,7 +18,16 @@ class Table extends Component {
           <td>{ Number(exchangeRates[currency].ask).toFixed(2) }</td>
           <td>{ conversor(value, exchangeRates[currency].ask).toFixed(2) }</td>
           <td>Real</td>
-          <button data-testid="delete-btn" type="button">Deletar</button>
+          <td>
+            <button
+              data-testid="delete-btn"
+              type="button"
+              onClick={ deleteExpense }
+              id={ id }
+            >
+              Deletar
+            </button>
+          </td>
         </tr>
       ));
 
@@ -48,6 +58,7 @@ Table.defaultProps = {
 
 Table.propTypes = {
   expenses: expensesValidator,
+  deleteExpense: PropTypes.func.isRequired,
 };
 
 export default Table;

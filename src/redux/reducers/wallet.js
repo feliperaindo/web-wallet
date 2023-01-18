@@ -1,7 +1,8 @@
 import {
   ADD_CURRENCIES,
   ADD_EXPENSE,
-  ADD_NAME_CURRENCIES } from '../actions/actionsTypes';
+  ADD_NAME_CURRENCIES,
+  REMOVE_EXPENSE } from '../actions/actionsTypes';
 
 const INITIAL_STATE = {
   currencies: [],
@@ -15,6 +16,7 @@ const walletReducer = (state = INITIAL_STATE, action) => {
   case ADD_CURRENCIES: return { ...state, currencies: [...action.payload] };
   case ADD_EXPENSE: return { ...state, expenses: [...state.expenses, action.payload] };
   case ADD_NAME_CURRENCIES: return { ...state, nameCurrencies: { ...action.payload } };
+  case REMOVE_EXPENSE: return { ...state, expenses: action.payload };
   default: return state;
   }
 };

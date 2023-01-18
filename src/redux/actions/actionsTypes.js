@@ -2,3 +2,4 @@ export const LOGIN = 'LOGIN';
 export const ADD_CURRENCIES = 'ADD_CURRENCIES';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const ADD_NAME_CURRENCIES = 'ADD_NAME_CURRENCIES';
+export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';

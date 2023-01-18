@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Header, Table, WalletForm } from '../services/ComponentsExport';
 import { allCurrenciesDataRequisition, requestCurrencies } from '../services/APIServices';
 import { expensesValidator, nameCurrencyValidator } from '../services/PropsValidator';
-import { addExpense } from '../redux/actions';
+import { addExpense, removeExpense } from '../redux/actions';
 
 class Wallet extends Component {
   state = {
@@ -54,6 +54,12 @@ class Wallet extends Component {
     });
   };
 
+  deleteExpense = ({ target }) => {
+    const { expenses, dispatch } = this.props;
+    const removedExpense = expenses.filter(({ id }) => id !== Number(target.id));
+    dispatch(removeExpense(removedExpense));
+  };
+
   render() {
     const { email, currencies, nameCurrencies, expenses } = this.props;
     const { value, description,
@@ -76,6 +82,7 @@ class Wallet extends Component {
         <Table
           nameCurrencies={ nameCurrencies }
           expenses={ expenses }
+          deleteExpense={ this.deleteExpense }
         />
       </>
     );
