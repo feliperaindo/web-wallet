@@ -5,7 +5,7 @@ import { nameCurrencyValidator } from '../services/PropsValidator';
 class WalletForm extends Component {
   render() {
     const { currencies, nameCurrencies, value, description,
-      currency, method, tag, inputChange, saveExpense } = this.props;
+      currency, method, tag, inputChange, saveExpense, editor, saveEdit } = this.props;
 
     const currencyOptionsElements = currencies.map((eachCurrency) => (
       <option
@@ -74,22 +74,29 @@ class WalletForm extends Component {
           <option value="Trabalho">Trabalho</option>
           <option value="Lazer">Lazer</option>
         </select>
-        <button type="button" onClick={ saveExpense }>Adicionar despesa</button>
+        {
+          (editor)
+            ? <button type="button" onClick={ saveEdit }>Editar despesa</button>
+            : <button type="button" onClick={ saveExpense }>Adicionar despesa</button>
+        }
+
       </form>
     );
   }
 }
 
 WalletForm.propTypes = {
-  currencies: PropTypes.arrayOf(PropTypes.string),
-  nameCurrencies: nameCurrencyValidator,
-  valueInput: PropTypes.number,
   descriptionInput: PropTypes.string,
   currencyInput: PropTypes.string,
   paymentMethod: PropTypes.string,
   tag: PropTypes.string,
+  editor: PropTypes.bool,
+  valueInput: PropTypes.number,
   inputChange: PropTypes.func,
   saveExpense: PropTypes.func,
+  saveEdit: PropTypes.func,
+  nameCurrencies: nameCurrencyValidator,
+  currencies: PropTypes.arrayOf(PropTypes.string),
 }.isRequired;
 
 export default WalletForm;

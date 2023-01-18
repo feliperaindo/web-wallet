@@ -5,7 +5,7 @@ import { expensesValidator } from '../services/PropsValidator';
 
 class Table extends Component {
   render() {
-    const { expenses, deleteExpense } = this.props;
+    const { expenses, deleteExpense, startEditExpense } = this.props;
 
     const infoToPopulate = expenses
       .map(({ description, tag, method, id, value, currency, exchangeRates }) => (
@@ -26,6 +26,14 @@ class Table extends Component {
               id={ id }
             >
               Deletar
+            </button>
+            <button
+              type="button"
+              data-testid="edit-btn"
+              onClick={ startEditExpense }
+              id={ `${id}-${description}` }
+            >
+              Editar
             </button>
           </td>
         </tr>
@@ -59,6 +67,7 @@ Table.defaultProps = {
 Table.propTypes = {
   expenses: expensesValidator,
   deleteExpense: PropTypes.func.isRequired,
+  startEditExpense: PropTypes.func.isRequired,
 };
 
 export default Table;

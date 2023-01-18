@@ -1,5 +1,9 @@
-export const LOGIN = 'LOGIN';
-export const ADD_CURRENCIES = 'ADD_CURRENCIES';
-export const ADD_EXPENSE = 'ADD_EXPENSE';
-export const ADD_NAME_CURRENCIES = 'ADD_NAME_CURRENCIES';
-export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
+export const LOGIN = 'login';
+export const ADD_CURRENCIES = 'add currencies';
+export const ADD_EXPENSE = 'add expense';
+export const ADD_NAME_CURRENCIES = 'add currencies names';
+export const REMOVE_EXPENSE = 'remove expense';
+export const EDIT_EXPENSE = 'edit expense';
+export const ENABLE_EDITOR = 'enable editor';
+export const DISABLE_EDITOR = 'disable editor';
+export const SAVE_ID_EDIT = 'save id to edit item in array';
