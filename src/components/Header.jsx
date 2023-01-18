@@ -13,7 +13,7 @@ class Header extends Component {
 
   calculatorFunction = (expenses) => expenses.reduce((total, expense) => (
     total + Number(expense.value)
-     * Number(expense.exchangeRates[expense.currency].ask)), 0).toFixed(2);
+     * Number(expense.exchanges[expense.currency].ask)), 0).toFixed(2);
 
   render() {
     const { email, expenses } = this.props;

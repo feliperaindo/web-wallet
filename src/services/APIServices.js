@@ -1,4 +1,4 @@
-import { addCurrencies, addFullNameCurrencies, addExpense } from '../redux/actions';
+import { addCurrencies, addFullNameCurrencies } from '../redux/actions';
 
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
@@ -32,9 +32,3 @@ export async function allCurrenciesDataRequisition(dispatch) {
   dispatch(addCurrencies(listOfCurrencies));
   dispatch(addFullNameCurrencies(infoCurrencies));
 }
-
-export const saveExpense = async (dispatch, newExpense) => {
-  const actualQuotation = await requestCurrencies();
-  newExpense.exchangeRates = { ...actualQuotation };
-  dispatch(addExpense(newExpense));
-};

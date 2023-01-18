@@ -2,8 +2,9 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Header, Table, WalletForm } from '../services/ComponentsExport';
-import { allCurrenciesDataRequisition, saveExpense } from '../services/APIServices';
+import { allCurrenciesDataRequisition, requestCurrencies } from '../services/APIServices';
 import { expensesValidator, nameCurrencyValidator } from '../services/PropsValidator';
+import { addExpense } from '../redux/actions';
 
 class Wallet extends Component {
   state = {
@@ -23,10 +24,16 @@ class Wallet extends Component {
     this.setState({ [name]: value });
   };
 
-  requestToSaveExpense = () => {
+  saveExpense = async () => {
+    const quotation = await requestCurrencies();
     const newExpense = this.newExpenseCreator();
+
+    newExpense.exchanges = { ...quotation };
+
     const { dispatch } = this.props;
-    saveExpense(dispatch, newExpense);
+
+    dispatch(addExpense(newExpense));
+
     this.clearState();
   };
 
@@ -64,7 +71,7 @@ class Wallet extends Component {
           method={ method }
           tag={ tag }
           inputChange={ this.inputChange }
-          saveExpense={ this.requestToSaveExpense }
+          saveExpense={ this.saveExpense }
         />
         <Table />
       </>
