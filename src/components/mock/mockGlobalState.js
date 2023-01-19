@@ -14,8 +14,17 @@ export const expectedFullGlobalStore = {
     idToEdit: 0 },
 };
 
-export const expectedEmptyGlobalStore = {
+export const expectedWalletEmptyGlobalStore = {
   user: { email: 'email@email.com' },
+  wallet: { currencies: [],
+    nameCurrencies: {},
+    expenses: [],
+    editor: false,
+    idToEdit: 0 },
+};
+
+export const expectedLoginEmptyGlobalStore = {
+  user: { email: '' },
   wallet: { currencies: [],
     nameCurrencies: {},
     expenses: [],

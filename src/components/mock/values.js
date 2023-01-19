@@ -1,5 +1,7 @@
 export const URL = 'https://economia.awesomeapi.com.br/json/all';
 
+export const URL_IMG = 'https://pngimg.com/uploads/free/free_PNG90775.png';
+
 export const VALUES_TO_TEST = {
   first: {
     CashValue: 50,
@@ -36,7 +38,7 @@ export const INITIAL_STATE = {
   initialState: { user: { email: 'email@email.com' } },
 };
 
-export const INPUTS_IDS_NAMES = {
+export const WALLET_INPUTS_IDS_NAMES = {
   valueInput: 'value-input',
   descriptionInput: 'description-input',
   paymentInput: 'method-input',
@@ -48,3 +50,16 @@ export const INPUTS_IDS_NAMES = {
   table: 'table',
   th: 'columnheader',
 };
+
+export const LOGIN_IDS_NAMES = {
+  emailInput: 'email-input',
+  passwordInput: 'password-input',
+  footer: 'footer',
+  altText: /logomarca/i,
+  button: /entrar/i,
+};
+
+export const LOGIN_TEST_VALUES = { invalidEmail: 'email_invalido',
+  invalidPassword: 12,
+  validEmail: 'test@test.com',
+  validPassword: 'qualquer senha' };

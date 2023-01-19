@@ -1,109 +1,83 @@
-import { act, screen } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-
-const TEST_ID_EMAIL = 'email-input';
-const TEST_ID_PASSWORD = 'password-input';
-
-const TEST_VALUES = { invalidEmail: 'email_invalido',
-  invalidPassword: 12,
-  validEmail: 'test@test.com',
-  validPassword: 'qualquer senha' };
+import { LOGIN_TEST_VALUES, URL_IMG } from '../components/mock/values';
+import { expectedLoginEmptyGlobalStore } from '../components/mock/mockGlobalState';
+import { captureLoginElements } from './helpers/captureElements';
 
 function logIn() {
-  const captureEmailInput = screen.getByTestId(TEST_ID_EMAIL);
-  const capturePasswordInput = screen.getByTestId(TEST_ID_PASSWORD);
-  const captureLoginButton = screen.getByRole('button', { name: /entrar/i });
+  const inputs = captureLoginElements();
 
   act(() => {
-    userEvent.type(captureEmailInput, TEST_VALUES.validEmail);
-    userEvent.type(capturePasswordInput, TEST_VALUES.validPassword);
-    userEvent.click(captureLoginButton);
+    userEvent.type(inputs.EmailInput, LOGIN_TEST_VALUES.validEmail);
+    userEvent.type(inputs.PasswordInput, LOGIN_TEST_VALUES.validPassword);
+    userEvent.click(inputs.LoginButton);
   });
 }
 
 describe('Sequência de testes relacionada à renderização do `App.jsx` e página `Login.jsx`', () => {
   test('Verifica se a página é renderizada com a rota correta', () => {
     const { history } = renderWithRouterAndRedux(<App />);
-    const { location: { pathname } } = history;
-    expect(pathname).toBe('/');
+    expect(history.location.pathname).toBe('/');
   });
 
   test('Verifica se a `store` é renderizada ao iniciar a aplicação', () => {
-    const expectedStore = {
-      user: { email: '' },
-      wallet: { currencies: [],
-        nameCurrencies: {},
-        expenses: [],
-        editor: false,
-        idToEdit: 0 },
-    };
-
     const { store } = renderWithRouterAndRedux(<App />);
 
-    expect(store.getState()).toEqual(expectedStore);
+    expect(store.getState()).toEqual(expectedLoginEmptyGlobalStore);
   });
 
   test('Verifica se os componentes da página html são renderizados', () => {
     renderWithRouterAndRedux(<App />);
 
-    const urlImg = 'https://pngimg.com/uploads/free/free_PNG90775.png';
+    const inputs = captureLoginElements();
 
-    const captureFooter = screen.getByTestId('footer');
-    const captureEmailInput = screen.getByTestId(TEST_ID_EMAIL);
-    const capturePasswordInput = screen.getByTestId(TEST_ID_PASSWORD);
-    const captureImg = screen.getByAltText(/logomarca/i);
-    const captureLoginButton = screen.getByRole('button', { name: /entrar/i });
-
-    expect(captureFooter).toBeInTheDocument();
-    expect(captureEmailInput).toBeInTheDocument();
-    expect(capturePasswordInput).toBeInTheDocument();
-    expect(captureImg).toBeInTheDocument();
-    expect(captureLoginButton).toBeInTheDocument();
-    expect(captureImg).toHaveAttribute('src', urlImg);
-    expect(captureLoginButton).toBeDisabled();
+    expect(inputs.Footer).toBeInTheDocument();
+    expect(inputs.EmailInput).toBeInTheDocument();
+    expect(inputs.PasswordInput).toBeInTheDocument();
+    expect(inputs.Img).toBeInTheDocument();
+    expect(inputs.LoginButton).toBeInTheDocument();
+    expect(inputs.Img).toHaveAttribute('src', URL_IMG);
+    expect(inputs.LoginButton).toBeDisabled();
   });
 
   test('Verifica se os campos de `email` e `password` podem ser preenchidos', () => {
     renderWithRouterAndRedux(<App />);
 
-    const captureEmailInput = screen.getByTestId(TEST_ID_EMAIL);
-    const capturePasswordInput = screen.getByTestId(TEST_ID_PASSWORD);
+    const inputs = captureLoginElements();
 
     act(() => {
-      userEvent.type(captureEmailInput, TEST_VALUES.validEmail);
-      userEvent.type(capturePasswordInput, TEST_VALUES.validPassword);
+      userEvent.type(inputs.EmailInput, LOGIN_TEST_VALUES.validEmail);
+      userEvent.type(inputs.PasswordInput, LOGIN_TEST_VALUES.validPassword);
     });
 
-    expect(captureEmailInput).toHaveValue(TEST_VALUES.validEmail);
-    expect(capturePasswordInput).toHaveValue(TEST_VALUES.validPassword);
+    expect(inputs.EmailInput).toHaveValue(LOGIN_TEST_VALUES.validEmail);
+    expect(inputs.PasswordInput).toHaveValue(LOGIN_TEST_VALUES.validPassword);
   });
 
   test('Verifica so o botão é habilitado apenas quando valores válidos são inseridos nos campos de input', () => {
     renderWithRouterAndRedux(<App />);
 
-    const captureEmailInput = screen.getByTestId(TEST_ID_EMAIL);
-    const capturePasswordInput = screen.getByTestId(TEST_ID_PASSWORD);
-    const captureLoginButton = screen.getByRole('button', { name: /entrar/i });
+    const inputs = captureLoginElements();
 
-    expect(captureLoginButton).toBeDisabled();
+    expect(inputs.LoginButton).toBeDisabled();
 
     act(() => {
-      userEvent.type(captureEmailInput, TEST_VALUES.validEmail);
-      userEvent.type(capturePasswordInput, TEST_VALUES.validPassword);
+      userEvent.type(inputs.EmailInput, LOGIN_TEST_VALUES.validEmail);
+      userEvent.type(inputs.PasswordInput, LOGIN_TEST_VALUES.validPassword);
     });
 
-    expect(captureLoginButton).toBeEnabled();
+    expect(inputs.LoginButton).toBeEnabled();
 
     act(() => {
-      userEvent.clear(captureEmailInput);
-      userEvent.clear(capturePasswordInput);
-      userEvent.type(captureEmailInput, TEST_VALUES.invalidEmail);
-      userEvent.type(capturePasswordInput, TEST_VALUES.invalidPassword);
+      userEvent.clear(inputs.EmailInput);
+      userEvent.clear(inputs.PasswordInput);
+      userEvent.type(inputs.EmailInput, LOGIN_TEST_VALUES.invalidEmail);
+      userEvent.type(inputs.PasswordInput, LOGIN_TEST_VALUES.invalidPassword);
     });
 
-    expect(captureLoginButton).toBeDisabled();
+    expect(inputs.LoginButton).toBeDisabled();
   });
 
   test('Verifica se ao clicar no botão `Entrar` a aplicação redireciona o usuário para a página `/carteira`', () => {
@@ -112,6 +86,6 @@ describe('Sequência de testes relacionada à renderização do `App.jsx` e pág
     logIn();
 
     expect(history.location.pathname).toBe('/carteira');
-    expect(store.getState().user.email).toBe(TEST_VALUES.validEmail);
+    expect(store.getState().user.email).toBe(LOGIN_TEST_VALUES.validEmail);
   });
 });

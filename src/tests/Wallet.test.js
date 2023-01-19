@@ -3,25 +3,11 @@ import userEvent from '@testing-library/user-event';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
 import fetchMock from '../components/mock/fetchMock';
-import { INITIAL_STATE, INPUTS_IDS_NAMES, URL, VALUES_TO_TEST } from '../components/mock/values';
-import { currenciesFullNames, expectedEmptyGlobalStore, expectedFullGlobalStore } from '../components/mock/mockGlobalState';
+import { INITIAL_STATE, URL, VALUES_TO_TEST } from '../components/mock/values';
+import { currenciesFullNames, expectedWalletEmptyGlobalStore, expectedFullGlobalStore } from '../components/mock/mockGlobalState';
+import { captureWalletElements } from './helpers/captureElements';
 
 import Wallet from '../pages/Wallet';
-
-function captureInputs() {
-  return { ValueInput: screen.getByTestId(INPUTS_IDS_NAMES.valueInput),
-    DescriptionInput: screen.getByTestId(INPUTS_IDS_NAMES.descriptionInput),
-    CurrencyInput: screen.getByTestId(INPUTS_IDS_NAMES.currencyInput),
-    PaymentInput: screen.getByTestId(INPUTS_IDS_NAMES.paymentInput),
-    TagInput: screen.getByTestId(INPUTS_IDS_NAMES.tagInput),
-    Email: screen.getByTestId(INPUTS_IDS_NAMES.email),
-    CurrencyName: screen.getByTestId(INPUTS_IDS_NAMES.currency),
-    CashValue: screen.getByTestId(INPUTS_IDS_NAMES.cash),
-    Table: screen.getByRole(INPUTS_IDS_NAMES.table),
-    THs: screen.getAllByRole(INPUTS_IDS_NAMES.th),
-    ButtonAdd: screen.getByRole('button', { name: /adicionar despesa/i }),
-  };
-}
 
 function fillInputs(position, inputs) {
   const { [position]: { CashValue,
@@ -64,7 +50,7 @@ describe('Sequência de testes relacionadas à estrutura do Redux e do Router da
 
   test('Verifica se a página renderiza a store correta', () => {
     const { store } = renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
-    expect(store.getState()).toEqual(expectedEmptyGlobalStore);
+    expect(store.getState()).toEqual(expectedWalletEmptyGlobalStore);
   });
 
   test('Verifica se a requisição é realizada no momento em que o componente é renderizado', async () => {
@@ -98,20 +84,20 @@ describe('Sequência de testes relacionada à renderização de componentes da p
   test('Verifica se é renderizado o <Header /> na página <Wallet />', () => {
     renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
 
-    const inputs = captureInputs();
+    const inputs = captureWalletElements();
 
     expect(inputs.Email).toBeInTheDocument();
     expect(inputs.CashValue).toBeInTheDocument();
     expect(inputs.CurrencyName).toBeInTheDocument();
-    expect(inputs.Email.textContent).toBe(expectedFullGlobalStore.user.email);
-    expect(inputs.CurrencyName.textContent).toBe('BRL');
-    expect(inputs.CashValue.textContent).toBe('0.00');
+    expect(inputs.Email).toHaveTextContent(expectedFullGlobalStore.user.email);
+    expect(inputs.CurrencyName).toHaveTextContent('BRL');
+    expect(inputs.CashValue).toHaveTextContent('0.00');
   });
 
   test('Verifica se é renderizado o <WalletForm /> na página <Wallet />', async () => {
     renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
 
-    const inputs = captureInputs();
+    const inputs = captureWalletElements();
 
     expect(inputs.ValueInput).toBeInTheDocument();
     expect(inputs.DescriptionInput).toBeInTheDocument();
@@ -121,9 +107,9 @@ describe('Sequência de testes relacionada à renderização de componentes da p
     expect(inputs.ButtonAdd).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(inputs.CurrencyInput.value).toBe('USD');
-      expect(inputs.PaymentInput.value).toBe('Dinheiro');
-      expect(inputs.TagInput.value).toBe('Alimentação');
+      expect(inputs.CurrencyInput).toHaveValue('USD');
+      expect(inputs.PaymentInput).toHaveValue('Dinheiro');
+      expect(inputs.TagInput).toHaveValue('Alimentação');
     });
   });
 
@@ -133,18 +119,18 @@ describe('Sequência de testes relacionada à renderização de componentes da p
 
     renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
 
-    const inputs = captureInputs();
+    const inputs = captureWalletElements();
 
     expect(inputs.Table).toBeInTheDocument();
     expect(inputs.Table.firstChild.tagName).toBe('THEAD');
     expect(inputs.Table.lastChild.tagName).toBe('TBODY');
-    expect(inputs.Table.lastChild.childNodes.length).toBe(0);
+    expect(inputs.Table.lastChild.childNodes).toHaveLength(0);
     expect(inputs.Table.firstChild.childNodes[0].tagName).toBe('TR');
-    expect(inputs.Table.firstChild.childNodes[0].childNodes.length).toBe(9);
+    expect(inputs.Table.firstChild.childNodes[0].childNodes).toHaveLength(9);
 
     inputs.THs.forEach((eachTH, index) => {
       expect(eachTH.tagName).toBe('TH');
-      expect(eachTH.textContent).toBe(columnsNames[index]);
+      expect(eachTH).toHaveTextContent(columnsNames[index]);
     });
   });
 
@@ -154,15 +140,15 @@ describe('Sequência de testes relacionada à renderização de componentes da p
 
     renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
 
-    const inputs = captureInputs();
+    const inputs = captureWalletElements();
     fillInputs('first', inputs);
 
-    expect(inputs.ValueInput.value).toBe(CashValue.toString());
-    expect(inputs.DescriptionInput.value).toBe(DescriptionValue);
-    expect(inputs.PaymentInput.value).toBe(PaymentValue);
-    expect(inputs.TagInput.value).toBe(TagValue);
+    expect(inputs.ValueInput).toHaveValue(CashValue);
+    expect(inputs.DescriptionInput).toHaveValue(DescriptionValue);
+    expect(inputs.PaymentInput).toHaveValue(PaymentValue);
+    expect(inputs.TagInput).toHaveValue(TagValue);
 
     await fillCurrency('first', inputs);
-    expect(inputs.CurrencyInput.value).toBe(CurrencyValue);
+    expect(inputs.CurrencyInput).toHaveValue(CurrencyValue);
   });
 });
