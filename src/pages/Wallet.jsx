@@ -55,20 +55,18 @@ class Wallet extends Component {
     });
   };
 
-  deleteExpense = ({ target }) => {
+  deleteExpense = (idElement) => {
     const { expenses, dispatch } = this.props;
-    const removedExpense = expenses.filter(({ id }) => `${id}` !== target.id);
+    const removedExpense = expenses.filter(({ id }) => id !== idElement);
     dispatch(removeExpense(removedExpense));
   };
 
-  startEditExpense = ({ target }) => {
+  startEditExpense = (idElement) => {
     const { expenses, dispatch } = this.props;
     dispatch(enableEditor());
 
     const { value, currency, method, tag, description, id } = expenses
-      .find(({
-        id: eachId,
-        description: eachDescription }) => `${eachId}-${eachDescription}` === target.id);
+      .find(({ id: eachId }) => eachId === idElement);
 
     dispatch(saveIdToEdit(id));
 
