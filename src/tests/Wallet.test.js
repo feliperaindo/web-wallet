@@ -64,6 +64,7 @@ describe('Sequência de testes relacionadas à estrutura do Redux e do Router da
 
   test('Verifica se é populado o estado global após a requisição', async () => {
     const { store } = renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
+
     await waitFor(
       () => expect(store.getState()).toEqual(expectedFullGlobalStore),
       { timeout: 3000 },
