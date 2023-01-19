@@ -84,7 +84,7 @@ describe('Sequência de testes relacionadas à usabilidade das funções da pág
     }, { timeout: 3000 });
   });
 
-  test('Verifica se são renderizadas as despesas na tela', async () => {
+  test('Verifica se é renderizadas a nova despesa na tela', async () => {
     const { description, tag, method, value, currency, exchangeRates } = expenseConstructor('fourth', 0);
 
     renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
