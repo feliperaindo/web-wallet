@@ -50,8 +50,8 @@ class Wallet extends Component {
       value: '',
       description: '',
       currency: 'USD',
-      method: 'cash',
-      tag: 'food',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
     });
   };
 

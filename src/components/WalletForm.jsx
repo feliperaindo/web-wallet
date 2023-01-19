@@ -79,7 +79,6 @@ class WalletForm extends Component {
             ? <button type="button" onClick={ saveEdit }>Editar despesa</button>
             : <button type="button" onClick={ saveExpense }>Adicionar despesa</button>
         }
-
       </form>
     );
   }
