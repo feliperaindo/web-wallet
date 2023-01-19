@@ -4,28 +4,28 @@ export const URL_IMG = 'https://pngimg.com/uploads/free/free_PNG90775.png';
 
 export const VALUES_TO_TEST = {
   first: {
-    CashValue: 50,
+    CashValue: 50.00,
     DescriptionValue: 'Paçoca doce',
     CurrencyValue: 'CHF',
     PaymentValue: 'Cartão de débito',
     TagValue: 'Alimentação',
   },
   second: {
-    CashValue: 100,
+    CashValue: 100.00,
     DescriptionValue: 'Xbox Game',
     CurrencyValue: 'USD',
     PaymentValue: 'Cartão de crédito',
     TagValue: 'Lazer',
   },
   third: {
-    CashValue: 20,
+    CashValue: 20.00,
     DescriptionValue: 'Teclado',
     CurrencyValue: 'DOGE',
     PaymentValue: 'Dinheiro',
     TagValue: 'Saúde',
   },
   fourth: {
-    CashValue: 1000,
+    CashValue: 1000.00,
     DescriptionValue: 'Headphone',
     CurrencyValue: 'CAD',
     PaymentValue: 'Dinheiro',
@@ -50,6 +50,10 @@ export const WALLET_INPUTS_IDS_NAMES = {
   table: 'table',
   th: 'columnheader',
   buttonAdd: /adicionar despesa/i,
+};
+
+export const WALLET_TABLE_NAMES = {
+  td: 'cell',
 };
 
 export const LOGIN_IDS_NAMES = {
