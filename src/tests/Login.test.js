@@ -8,7 +8,6 @@ import { captureLoginElements } from './helpers/captureElements';
 
 function logIn() {
   const inputs = captureLoginElements();
-
   act(() => {
     userEvent.type(inputs.EmailInput, LOGIN_TEST_VALUES.validEmail);
     userEvent.type(inputs.PasswordInput, LOGIN_TEST_VALUES.validPassword);

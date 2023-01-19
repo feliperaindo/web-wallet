@@ -49,6 +49,7 @@ export const WALLET_INPUTS_IDS_NAMES = {
   cash: 'total-field',
   table: 'table',
   th: 'columnheader',
+  buttonAdd: /adicionar despesa/i,
 };
 
 export const LOGIN_IDS_NAMES = {

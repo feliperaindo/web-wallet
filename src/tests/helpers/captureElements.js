@@ -12,7 +12,7 @@ export function captureWalletElements() {
     CashValue: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.cash),
     Table: screen.getByRole(WALLET_INPUTS_IDS_NAMES.table),
     THs: screen.getAllByRole(WALLET_INPUTS_IDS_NAMES.th),
-    ButtonAdd: screen.getByRole('button', { name: /adicionar despesa/i }),
+    ButtonAdd: screen.getByRole('button', { name: WALLET_INPUTS_IDS_NAMES.buttonAdd }),
   };
 }
 
