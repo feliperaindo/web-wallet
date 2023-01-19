@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { WALLET_INPUTS_IDS_NAMES, LOGIN_IDS_NAMES, WALLET_TABLE_NAMES } from '../../components/mock/values';
+import { WALLET_INPUTS_IDS_NAMES, LOGIN_IDS_NAMES } from '../../components/mock/values';
 
 export function captureWalletElements() {
   return { ValueInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.valueInput),
