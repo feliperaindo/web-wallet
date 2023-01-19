@@ -71,7 +71,7 @@ describe('Sequência de testes relacionadas à estrutura do Redux e do Router da
   });
 });
 
-describe('Sequência de testes relacionada à renderização de componentes da página `Wallet.jsx`', () => {
+describe('Sequência de testes relacionada à renderização de componentes da página `Wallet.jsx` ao carregar', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch');
     global.fetch = jest.fn(fetchMock);
@@ -150,5 +150,42 @@ describe('Sequência de testes relacionada à renderização de componentes da p
 
     await fillCurrency('first', inputs);
     expect(inputs.CurrencyInput).toHaveValue(CurrencyValue);
+  });
+});
+
+describe('Sequência de testes relacionadas à usabilidade das funções da página Wallet', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch');
+    global.fetch = jest.fn(fetchMock);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('Verifica se é feita uma nova requisição no momento que uma despesa é adicionada', async () => {
+    renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
+    const inputs = captureWalletElements();
+    fillInputs('second', inputs);
+    await fillCurrency('second', inputs);
+    act(() => userEvent.click(inputs.ButtonAdd));
+
+    expect(fetch).toHaveBeenCalled();
+    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledWith(URL);
+  });
+
+  test('Verifica se o estado é atualizado após adicionar uma despesa', async () => {
+    const { store } = renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
+    const inputs = captureWalletElements();
+    fillInputs('second', inputs);
+    await fillCurrency('second', inputs);
+    act(() => userEvent.click(inputs.ButtonAdd));
+
+    await waitFor(() => {
+      const storeSaved = store.getState().wallet.expenses;
+      expect(storeSaved).toHaveLength(1);
+      expect(storeSaved).toEqual();
+    }, { timeout: 3000 });
   });
 });
