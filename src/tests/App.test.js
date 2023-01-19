@@ -23,7 +23,7 @@ function logIn() {
   });
 }
 
-describe('Sequência de testes relacionada à renderização da página `App.jsx`', () => {
+describe('Sequência de testes relacionada à renderização do `App.jsx` e página `Login.jsx`', () => {
   test('Verifica se a página é renderizada com a rota correta', () => {
     const { history } = renderWithRouterAndRedux(<App />);
     const { location: { pathname } } = history;
