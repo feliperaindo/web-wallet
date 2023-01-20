@@ -6,9 +6,9 @@ import { captureWalletElements, captureWalletExpensesElements } from './helpers/
 import expenseConstructor from './helpers/expenseConstructor';
 import { fillInputs, fillCurrency } from './Wallet.test';
 
-import fetchMock from '../components/mock/fetchMock';
-import { INITIAL_STATE, URL } from '../components/mock/values';
-import { currenciesFullNames } from '../components/mock/mockGlobalState';
+import fetchMock from '../mock/fetchMock';
+import { INITIAL_STATE, URL } from '../mock/values';
+import { currenciesFullNames } from '../mock/mockGlobalState';
 
 import Wallet from '../pages/Wallet';
 import { conversor } from '../services/Calculator';

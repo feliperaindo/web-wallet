@@ -2,9 +2,9 @@ import { screen, act, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import fetchMock from '../components/mock/fetchMock';
-import { INITIAL_STATE, URL, VALUES_TO_TEST } from '../components/mock/values';
-import { currenciesFullNames, expectedWalletEmptyGlobalStore, expectedFullGlobalStore } from '../components/mock/mockGlobalState';
+import fetchMock from '../mock/fetchMock';
+import { INITIAL_STATE, URL, VALUES_TO_TEST } from '../mock/values';
+import { currenciesFullNames, expectedWalletEmptyGlobalStore, expectedFullGlobalStore } from '../mock/mockGlobalState';
 import { captureWalletElements } from './helpers/captureElements';
 
 import Wallet from '../pages/Wallet';

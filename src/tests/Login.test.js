@@ -2,8 +2,8 @@ import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import { LOGIN_TEST_VALUES, URL_IMG } from '../components/mock/values';
-import { expectedLoginEmptyGlobalStore } from '../components/mock/mockGlobalState';
+import { LOGIN_TEST_VALUES, URL_IMG } from '../mock/values';
+import { expectedLoginEmptyGlobalStore } from '../mock/mockGlobalState';
 import { captureLoginElements } from './helpers/captureElements';
 
 function logIn() {

@@ -1,5 +1,5 @@
 import mockData from './mockData';
-import { removeUSDT, getFullNameCurrencies } from '../../services/APIServices';
+import { removeUSDT, getFullNameCurrencies } from '../services/APIServices';
 
 export const currenciesArray = Object.keys(removeUSDT(mockData));
 
