@@ -11,7 +11,7 @@ import { INITIAL_STATE, URL } from '../mock/values';
 import { currenciesFullNames } from '../mock/mockGlobalState';
 
 import Wallet from '../pages/Wallet';
-import { conversor } from '../services/Calculator';
+import { calculatorFunction, conversor } from '../services/Calculator';
 
 async function addExpense(position) {
   const inputs = captureWalletElements();
@@ -30,6 +30,21 @@ async function checkEmptyInputs() {
   }, { timeout: 3000 });
 }
 
+function returnCaptureWalletExpensesElements(expense) {
+  const { description, tag, method, value, currency, exchangeRates } = expense;
+
+  return captureWalletExpensesElements(
+    { expenseDescription: description,
+      expenseTag: tag,
+      expenseMethod: method,
+      expenseValue: Number(value).toFixed(2),
+      expenseCurrencyName: currenciesFullNames[currency],
+      expenseCurrencyRate: Number(exchangeRates[currency].ask).toFixed(2),
+      expenseCurrencyConvert: conversor(value, exchangeRates[currency].ask)
+        .toFixed(2) },
+  );
+}
+
 describe('Sequência de testes relacionadas à usabilidade das funções da página Wallet', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch');
@@ -42,10 +57,7 @@ describe('Sequência de testes relacionadas à usabilidade das funções da pág
 
   test('Verifica se é feita uma nova requisição no momento que uma despesa é adicionada', async () => {
     renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
-    const inputs = captureWalletElements();
-    fillInputs('second', inputs);
-    fillCurrency('second', inputs);
-    act(() => userEvent.click(inputs.ButtonAdd));
+    await addExpense('second');
 
     expect(fetch).toHaveBeenCalled();
     expect(fetch).toHaveBeenCalledTimes(2);
@@ -54,7 +66,6 @@ describe('Sequência de testes relacionadas à usabilidade das funções da pág
 
   test('Verifica se o estado é atualizado após adicionar uma despesa', async () => {
     const { store } = renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
-
     await addExpense('first');
 
     await waitFor(() => {
@@ -84,25 +95,18 @@ describe('Sequência de testes relacionadas à usabilidade das funções da pág
     }, { timeout: 3000 });
   });
 
-  test('Verifica se é renderizadas a nova despesa na tela', async () => {
-    const { description, tag, method, value, currency, exchangeRates } = expenseConstructor('fourth', 0);
+  test('Verifica se é renderizada a nova despesa na tela e atualizado o valor total', async () => {
+    const expense = expenseConstructor('fourth', 0);
+    const { description, tag, method, value, currency, exchangeRates } = expense;
 
     renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
 
     await addExpense('fourth');
 
     await waitFor(() => {
-      const inputs = captureWalletExpensesElements(
-        { expenseDescription: description,
-          expenseTag: tag,
-          expenseMethod: method,
-          expenseValue: Number(value).toFixed(2),
-          expenseCurrencyName: currenciesFullNames[currency],
-          expenseCurrencyRate: Number(exchangeRates[currency].ask).toFixed(2),
-          expenseCurrencyConvert: conversor(value, exchangeRates[currency].ask)
-            .toFixed(2) },
-      );
+      const inputs = returnCaptureWalletExpensesElements(expense);
 
+      expect(inputs.totalExpenses).toHaveTextContent(calculatorFunction([expenseConstructor('fourth', 0)]));
       expect(inputs.tag).toHaveLength(2);
       expect(inputs.value).toHaveLength(1);
       expect(inputs.method).toHaveLength(2);
@@ -122,5 +126,9 @@ describe('Sequência de testes relacionadas à usabilidade das funções da pág
         .toHaveTextContent(conversor(value, exchangeRates[currency].ask)
           .toFixed(2));
     }, { timeout: 3000 });
+  });
+
+  test('Verifica se são renderizadas mais despesas após adiciona-lás', async () => {
+    renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
   });
 });

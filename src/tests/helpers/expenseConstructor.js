@@ -1,5 +1,5 @@
-import mockData from '../../components/mock/mockData';
-import { VALUES_TO_TEST } from '../../components/mock/values';
+import mockData from '../../mock/mockData';
+import { VALUES_TO_TEST } from '../../mock/values';
 
 function expenseConstructor(position, id) {
   return {

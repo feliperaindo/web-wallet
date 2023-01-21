@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { WALLET_INPUTS_IDS_NAMES, LOGIN_IDS_NAMES } from '../../components/mock/values';
+import { WALLET_INPUTS_IDS_NAMES, LOGIN_IDS_NAMES } from '../../mock/values';
 
 export function captureWalletElements() {
   return { ValueInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.valueInput),
@@ -32,9 +32,10 @@ export function captureWalletExpensesElements({
     currencyName: screen.getAllByText(expenseCurrencyName),
     currencyRate: screen.getAllByText(expenseCurrencyRate),
     currencyConvert: screen.getAllByText(expenseCurrencyConvert),
-    real: screen.getAllByText(/[$Real^]/g),
+    real: screen.getAllByText(/[$Real^]/),
     buttonDelete: screen.getAllByRole('button', { name: /deletar/i }),
     buttonEdit: screen.getAllByRole('button', { name: /editar/i }),
+    totalExpenses: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.cash),
   };
 }
 

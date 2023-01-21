@@ -23,7 +23,6 @@ class Table extends Component {
               data-testid="delete-btn"
               type="button"
               onClick={ () => deleteExpense(id) }
-              id={ id }
             >
               Deletar
             </button>
@@ -31,7 +30,6 @@ class Table extends Component {
               type="button"
               data-testid="edit-btn"
               onClick={ () => startEditExpense(id) }
-              id={ `${id}-${description}` }
             >
               Editar
             </button>
