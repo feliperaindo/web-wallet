@@ -92,7 +92,7 @@ describe('Sequência de testes acerca da funcionalidade de edição da aplicaç�
     expect(globalState.wallet.idToEdit).toBe(EXPENSES[1].id);
   });
 
-  test('Verifica se ao clicar no botão editar a aplicação habilita o modo de edição na página', () => {
+  test('Verifica se ao clicar no botão `editar` a aplicação habilita o modo de edição na página', () => {
     const { first: { CashValue, DescriptionValue,
       PaymentValue, TagValue } } = VALUES_TO_TEST;
 
