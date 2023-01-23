@@ -1,37 +1,14 @@
-import { screen, act, waitFor, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { waitFor } from '@testing-library/react';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
+import { captureWalletElements } from './helpers/captureElements';
+import { fillCurrency, fillInputs } from './helpers/PagesInteractions';
+
 import fetchMock from '../mock/fetchMock';
 import { INITIAL_STATE, URL, VALUES_TO_TEST } from '../mock/values';
-import { currenciesFullNames, expectedWalletEmptyGlobalStore, expectedFullGlobalStore } from '../mock/mockGlobalState';
-import { captureWalletElements } from './helpers/captureElements';
+import { expectedWalletEmptyGlobalStore, expectedFullGlobalStore } from '../mock/mockGlobalState';
 
 import Wallet from '../pages/Wallet';
-
-export function fillInputs(position, inputs) {
-  const { [position]: { CashValue,
-    DescriptionValue, PaymentValue, TagValue } } = VALUES_TO_TEST;
-
-  act(() => {
-    fireEvent.change(inputs.ValueInput, { target: { value: CashValue } });
-    userEvent.type(inputs.DescriptionInput, DescriptionValue);
-    userEvent.selectOptions(inputs.PaymentInput, PaymentValue);
-    userEvent.selectOptions(inputs.TagInput, TagValue);
-  });
-}
-
-export async function fillCurrency(position, inputs) {
-  const { [position]: { CurrencyValue } } = VALUES_TO_TEST;
-  await waitFor(() => {
-    userEvent.selectOptions(
-      inputs.CurrencyInput,
-      screen.getByRole('option', {
-        name: `${CurrencyValue} - ${currenciesFullNames[CurrencyValue]}`,
-      }),
-    );
-  });
-}
 
 describe('Sequência de testes relacionadas à estrutura do Redux e do Router da página `Wallet.jsx`', () => {
   beforeEach(() => {

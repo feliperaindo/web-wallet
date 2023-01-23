@@ -1,5 +1,9 @@
 import { screen } from '@testing-library/react';
+
+import { currenciesFullNames } from '../../mock/mockGlobalState';
 import { WALLET_INPUTS_IDS_NAMES, LOGIN_IDS_NAMES } from '../../mock/values';
+
+import { conversor } from '../../services/Calculator';
 
 export function captureWalletElements() {
   return { ValueInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.valueInput),
@@ -47,4 +51,19 @@ export function captureLoginElements() {
     Footer: screen.getByTestId(LOGIN_IDS_NAMES.footer),
     Img: screen.getByAltText(LOGIN_IDS_NAMES.altText),
   };
+}
+
+export function returnCaptureWalletExpensesElements(expense) {
+  const { description, tag, method, value, currency, exchangeRates } = expense;
+
+  return captureWalletExpensesElements(
+    { expenseDescription: description,
+      expenseTag: tag,
+      expenseMethod: method,
+      expenseValue: Number(value).toFixed(2),
+      expenseCurrencyName: currenciesFullNames[currency],
+      expenseCurrencyRate: Number(exchangeRates[currency].ask).toFixed(2),
+      expenseCurrencyConvert: conversor(value, exchangeRates[currency].ask)
+        .toFixed(2) },
+  );
 }

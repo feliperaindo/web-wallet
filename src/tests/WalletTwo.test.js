@@ -1,55 +1,18 @@
-import { act, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { waitFor } from '@testing-library/react';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import { captureWalletElements, captureWalletExpensesElements } from './helpers/captureElements';
-import expenseConstructor from './helpers/expenseConstructor';
-import { fillInputs, fillCurrency } from './Wallet.test';
+import { returnCaptureWalletExpensesElements } from './helpers/captureElements';
+import { addExpense, checkEmptyInputs, EXPENSES, POSITIONS } from './helpers/PagesInteractions';
 
 import fetchMock from '../mock/fetchMock';
 import { INITIAL_STATE, URL } from '../mock/values';
 import { currenciesFullNames } from '../mock/mockGlobalState';
 
-import Wallet from '../pages/Wallet';
 import { calculatorFunction, conversor } from '../services/Calculator';
 
-const POSITIONS = ['first', 'second', 'third', 'fourth'];
+import Wallet from '../pages/Wallet';
 
-const EXPENSES = POSITIONS.map((position, index) => expenseConstructor(position, index));
-
-async function addExpense(position) {
-  const inputs = captureWalletElements();
-  fillInputs(position, inputs);
-  await fillCurrency(position, inputs);
-  act(() => userEvent.click(inputs.ButtonAdd));
-}
-
-async function checkEmptyInputs() {
-  const inputs = captureWalletElements();
-  await waitFor(() => {
-    expect(inputs.DescriptionInput).toHaveValue('');
-    expect(inputs.PaymentInput).toHaveValue('Dinheiro');
-    expect(inputs.TagInput).toHaveValue('Alimentação');
-    expect(inputs.CurrencyInput).toHaveValue('USD');
-  }, { timeout: 3000 });
-}
-
-function returnCaptureWalletExpensesElements(expense) {
-  const { description, tag, method, value, currency, exchangeRates } = expense;
-
-  return captureWalletExpensesElements(
-    { expenseDescription: description,
-      expenseTag: tag,
-      expenseMethod: method,
-      expenseValue: Number(value).toFixed(2),
-      expenseCurrencyName: currenciesFullNames[currency],
-      expenseCurrencyRate: Number(exchangeRates[currency].ask).toFixed(2),
-      expenseCurrencyConvert: conversor(value, exchangeRates[currency].ask)
-        .toFixed(2) },
-  );
-}
-
-describe('Sequência de testes relacionadas à usabilidade das funções da página Wallet', () => {
+describe('Sequência de testes relacionadas à adição de novas despesas na página Wallet', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch');
     global.fetch = jest.fn(fetchMock);
