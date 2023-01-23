@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Header, Table, WalletForm } from '../services/ComponentsExport';
 import { allCurrenciesDataRequisition, requestCurrencies } from '../services/APIServices';
 import { expensesValidator, nameCurrencyValidator } from '../services/PropsValidator';
-import { addExpense, editExpense, enableEditor,
+import { addExpense, disableEditor, editExpense, enableEditor,
   removeExpense, saveIdToEdit } from '../redux/actions';
 
 class Wallet extends Component {
@@ -81,6 +81,9 @@ class Wallet extends Component {
       : expense));
 
     dispatch(editExpense(newExpensesArray));
+    dispatch(disableEditor());
+
+    this.clearState();
   };
 
   render() {

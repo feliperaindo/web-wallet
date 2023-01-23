@@ -45,7 +45,7 @@ export const WALLET_INPUTS_IDS_NAMES = {
   table: 'table',
   th: 'columnheader',
   buttonAdd: /adicionar despesa/i,
-  buttonEdit: /editar despesa/i,
+  buttonEdit: /Editar despesa/i,
 };
 
 export const LOGIN_IDS_NAMES = {

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { VALUES_TO_TEST } from '../../mock/values';
 import { currenciesFullNames, INITIAL_STATE, WALLET_GLOBAL_STORE } from '../../mock/mockGlobalState';
 
-import { captureWalletElements } from './captureElements';
+import { captureExpensesElements, captureWalletElements } from './captureElements';
 
 import expenseConstructor from './expenseConstructor';
 
@@ -58,4 +58,24 @@ export function fullGlobalStorage() {
   const state = { ...INITIAL_STATE, initialState: { ...WALLET_GLOBAL_STORE } };
   state.initialState.wallet.expenses = EXPENSES;
   return state;
+}
+
+export function editExpenseToTest(position) {
+  const expensesInputs = captureExpensesElements(EXPENSES[position]);
+
+  act(() => {
+    userEvent.click(expensesInputs.buttonEdit[position]);
+  });
+
+  act(() => {
+    const walletInputs = captureWalletElements({ edit: true });
+
+    fireEvent.change(walletInputs.ValueInput, { target: { value: 10 } });
+    userEvent.clear(walletInputs.DescriptionInput);
+    userEvent.type(walletInputs.DescriptionInput, 'Mouse');
+    userEvent.selectOptions(walletInputs.PaymentInput, 'Cartão de crédito');
+    userEvent.selectOptions(walletInputs.TagInput, 'Trabalho');
+
+    userEvent.click(walletInputs.ButtonAdd);
+  });
 }

@@ -2,13 +2,13 @@ import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
+import { captureExpensesElements, captureWalletElements } from './helpers/captureElements';
+import { editExpenseToTest, EXPENSES, fullGlobalStorage } from './helpers/PagesInteractions';
 
+import mockData from '../mock/mockData';
 import fetchMock from '../mock/fetchMock';
 import { VALUES_TO_TEST } from '../mock/values';
 import { WALLET_GLOBAL_STORE } from '../mock/mockGlobalState';
-
-import { EXPENSES, fullGlobalStorage } from './helpers/PagesInteractions';
-import { captureExpensesElements, captureWalletElements } from './helpers/captureElements';
 
 import { calculatorFunction } from '../services/Calculator';
 
@@ -92,6 +92,34 @@ describe('Sequência de testes acerca da funcionalidade de edição da aplicaç�
     expect(globalState.wallet.idToEdit).toBe(EXPENSES[1].id);
   });
 
+  test('Verifica se após a edição de uma despesa ela é atualizada no estado global', () => {
+    const globalStateWithEditElement = JSON.parse(JSON.stringify(WALLET_GLOBAL_STORE));
+
+    const newExpense = {
+      value: '10',
+      description: 'Mouse',
+      currency: 'DOGE',
+      method: 'Cartão de crédito',
+      tag: 'Trabalho',
+      id: 2,
+      exchangeRates: mockData,
+    };
+
+    const newArrayExpenses = [EXPENSES[0], EXPENSES[1], newExpense, EXPENSES[3]];
+
+    globalStateWithEditElement.wallet.expenses = newArrayExpenses;
+    globalStateWithEditElement.wallet.idToEdit = 2;
+
+    const { store } = renderWithRouterAndRedux(<Wallet />, fullGlobalStorage());
+
+    editExpenseToTest(2);
+
+    const getStore = store.getState();
+
+    expect(getStore).toEqual(globalStateWithEditElement);
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
   test('Verifica se ao clicar no botão `editar` a aplicação habilita o modo de edição na página', () => {
     const { first: { CashValue, DescriptionValue,
       PaymentValue, TagValue } } = VALUES_TO_TEST;
@@ -111,5 +139,24 @@ describe('Sequência de testes acerca da funcionalidade de edição da aplicaç�
     expect(walletInputs.PaymentInput).toHaveValue(PaymentValue);
     expect(walletInputs.TagInput).toHaveValue(TagValue);
     expect(walletInputs.ButtonAdd).toHaveTextContent(/Editar despesa/);
+  });
+
+  test('Verifica se ao terminar a edição da despesa a página é atualizada com as novas informações', () => {
+    renderWithRouterAndRedux(<Wallet />, fullGlobalStorage());
+
+    editExpenseToTest(2);
+
+    expect(inputs.description[0]).not.toBeInTheDocument();
+    expect(inputs.tag[1]).not.toBeInTheDocument();
+    expect(inputs.value[0]).not.toBeInTheDocument();
+    expect(inputs.currencyName[0]).not.toBeInTheDocument();
+    expect(inputs.currencyRate[0]).not.toBeInTheDocument();
+    expect(inputs.currencyConvert[0]).not.toBeInTheDocument();
+    expect(inputs.method[1]).not.toBeInTheDocument();
+    expect(inputs.buttonDelete[2]).not.toBeInTheDocument();
+    expect(inputs.buttonEdit[2]).not.toBeInTheDocument();
+
+    expect(inputs.totalExpenses)
+      .toHaveTextContent(calculatorFunction([EXPENSES[0], EXPENSES[1], EXPENSES[3]]));
   });
 });
