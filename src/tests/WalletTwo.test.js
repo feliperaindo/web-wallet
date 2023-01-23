@@ -1,12 +1,12 @@
 import { waitFor } from '@testing-library/react';
 
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import { returnCaptureWalletExpensesElements } from './helpers/captureElements';
+import { captureExpensesElements } from './helpers/captureElements';
 import { addExpense, checkEmptyInputs, EXPENSES, POSITIONS } from './helpers/PagesInteractions';
 
 import fetchMock from '../mock/fetchMock';
-import { INITIAL_STATE, URL } from '../mock/values';
-import { currenciesFullNames } from '../mock/mockGlobalState';
+import { URL } from '../mock/values';
+import { INITIAL_STATE, currenciesFullNames } from '../mock/mockGlobalState';
 
 import { calculatorFunction, conversor } from '../services/Calculator';
 
@@ -68,7 +68,7 @@ describe('Sequência de testes relacionadas à adição de novas despesas na pá
     await addExpense(POSITIONS[3]);
 
     await waitFor(() => {
-      const inputs = returnCaptureWalletExpensesElements(EXPENSES[3]);
+      const inputs = captureExpensesElements(EXPENSES[3]);
 
       expect(inputs.tag).toHaveLength(2);
       expect(inputs.value).toHaveLength(1);
@@ -106,7 +106,7 @@ describe('Sequência de testes relacionadas à adição de novas despesas na pá
     await waitFor(() => {
       const { description, tag, method, value, currency, exchangeRates } = EXPENSES[3];
 
-      const inputsFirstExpense = returnCaptureWalletExpensesElements(EXPENSES[3]);
+      const inputsFirstExpense = captureExpensesElements(EXPENSES[3]);
 
       expect(inputsFirstExpense.tag).toHaveLength(2);
       expect(inputsFirstExpense.value).toHaveLength(1);
@@ -131,7 +131,7 @@ describe('Sequência de testes relacionadas à adição de novas despesas na pá
     await waitFor(() => {
       const { description, tag, method, value, currency, exchangeRates } = EXPENSES[1];
 
-      const inputsSecondExpense = returnCaptureWalletExpensesElements(EXPENSES[1]);
+      const inputsSecondExpense = captureExpensesElements(EXPENSES[1]);
 
       expect(inputsSecondExpense.tag).toHaveLength(2);
       expect(inputsSecondExpense.value).toHaveLength(1);

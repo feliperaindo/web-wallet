@@ -2,7 +2,7 @@ import { screen, act, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { VALUES_TO_TEST } from '../../mock/values';
-import { currenciesFullNames } from '../../mock/mockGlobalState';
+import { currenciesFullNames, INITIAL_STATE, WALLET_GLOBAL_STORE } from '../../mock/mockGlobalState';
 
 import { captureWalletElements } from './captureElements';
 
@@ -52,4 +52,10 @@ export async function checkEmptyInputs() {
     expect(inputs.TagInput).toHaveValue('Alimentação');
     expect(inputs.CurrencyInput).toHaveValue('USD');
   }, { timeout: 3000 });
+}
+
+export function fullGlobalStorage() {
+  const state = { ...INITIAL_STATE, initialState: { ...WALLET_GLOBAL_STORE } };
+  state.initialState.wallet.expenses = EXPENSES;
+  return state;
 }

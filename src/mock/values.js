@@ -33,11 +33,6 @@ export const VALUES_TO_TEST = {
   },
 };
 
-export const INITIAL_STATE = {
-  initialEntries: ['/carteira'],
-  initialState: { user: { email: 'email@email.com' } },
-};
-
 export const WALLET_INPUTS_IDS_NAMES = {
   valueInput: 'value-input',
   descriptionInput: 'description-input',
@@ -50,10 +45,7 @@ export const WALLET_INPUTS_IDS_NAMES = {
   table: 'table',
   th: 'columnheader',
   buttonAdd: /adicionar despesa/i,
-};
-
-export const WALLET_TABLE_NAMES = {
-  td: 'cell',
+  buttonEdit: /editar despesa/i,
 };
 
 export const LOGIN_IDS_NAMES = {
@@ -64,7 +56,9 @@ export const LOGIN_IDS_NAMES = {
   button: /entrar/i,
 };
 
-export const LOGIN_TEST_VALUES = { invalidEmail: 'email_invalido',
+export const LOGIN_TEST_VALUES = {
+  invalidEmail: 'email_invalido',
   invalidPassword: 12,
   validEmail: 'test@test.com',
-  validPassword: 'qualquer senha' };
+  validPassword: 'qualquer senha',
+};

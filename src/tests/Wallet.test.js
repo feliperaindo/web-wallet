@@ -5,8 +5,8 @@ import { captureWalletElements } from './helpers/captureElements';
 import { fillCurrency, fillInputs } from './helpers/PagesInteractions';
 
 import fetchMock from '../mock/fetchMock';
-import { INITIAL_STATE, URL, VALUES_TO_TEST } from '../mock/values';
-import { expectedWalletEmptyGlobalStore, expectedFullGlobalStore } from '../mock/mockGlobalState';
+import { URL, VALUES_TO_TEST } from '../mock/values';
+import { INITIAL_STATE, WALLET_GLOBAL_STORE, EMAIL_GLOBAL_STORE } from '../mock/mockGlobalState';
 
 import Wallet from '../pages/Wallet';
 
@@ -27,7 +27,7 @@ describe('Sequência de testes relacionadas à estrutura do Redux e do Router da
 
   test('Verifica se a página renderiza a store correta', () => {
     const { store } = renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
-    expect(store.getState()).toEqual(expectedWalletEmptyGlobalStore);
+    expect(store.getState()).toEqual(EMAIL_GLOBAL_STORE);
   });
 
   test('Verifica se a requisição é realizada no momento em que o componente é renderizado', async () => {
@@ -43,7 +43,7 @@ describe('Sequência de testes relacionadas à estrutura do Redux e do Router da
     const { store } = renderWithRouterAndRedux(<Wallet />, INITIAL_STATE);
 
     await waitFor(
-      () => expect(store.getState()).toEqual(expectedFullGlobalStore),
+      () => expect(store.getState()).toEqual(WALLET_GLOBAL_STORE),
       { timeout: 3000 },
     );
   });
@@ -67,7 +67,7 @@ describe('Sequência de testes relacionada à renderização de componentes da p
     expect(inputs.Email).toBeInTheDocument();
     expect(inputs.CashValue).toBeInTheDocument();
     expect(inputs.CurrencyName).toBeInTheDocument();
-    expect(inputs.Email).toHaveTextContent(expectedFullGlobalStore.user.email);
+    expect(inputs.Email).toHaveTextContent(WALLET_GLOBAL_STORE.user.email);
     expect(inputs.CurrencyName).toHaveTextContent('BRL');
     expect(inputs.CashValue).toHaveTextContent('0.00');
   });

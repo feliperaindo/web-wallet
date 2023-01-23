@@ -5,8 +5,15 @@ import { WALLET_INPUTS_IDS_NAMES, LOGIN_IDS_NAMES } from '../../mock/values';
 
 import { conversor } from '../../services/Calculator';
 
-export function captureWalletElements() {
-  return { ValueInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.valueInput),
+export function captureWalletElements({ edit } = { edit: false }) {
+  function buttonRole() {
+    return (edit)
+      ? screen.getByRole('button', { name: WALLET_INPUTS_IDS_NAMES.buttonEdit })
+      : screen.getByRole('button', { name: WALLET_INPUTS_IDS_NAMES.buttonAdd });
+  }
+
+  return {
+    ValueInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.valueInput),
     DescriptionInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.descriptionInput),
     CurrencyInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.currencyInput),
     PaymentInput: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.paymentInput),
@@ -16,30 +23,7 @@ export function captureWalletElements() {
     CashValue: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.cash),
     Table: screen.getByRole(WALLET_INPUTS_IDS_NAMES.table),
     THs: screen.getAllByRole(WALLET_INPUTS_IDS_NAMES.th),
-    ButtonAdd: screen.getByRole('button', { name: WALLET_INPUTS_IDS_NAMES.buttonAdd }),
-  };
-}
-
-export function captureWalletExpensesElements({
-  expenseDescription,
-  expenseTag,
-  expenseMethod,
-  expenseValue,
-  expenseCurrencyName,
-  expenseCurrencyRate,
-  expenseCurrencyConvert }) {
-  return {
-    description: screen.getAllByText(expenseDescription),
-    tag: screen.getAllByText(expenseTag),
-    method: screen.getAllByText(expenseMethod),
-    value: screen.getAllByText(expenseValue),
-    currencyName: screen.getAllByText(expenseCurrencyName),
-    currencyRate: screen.getAllByText(expenseCurrencyRate),
-    currencyConvert: screen.getAllByText(expenseCurrencyConvert),
-    real: screen.getAllByText(/[$Real^]/),
-    buttonDelete: screen.getAllByRole('button', { name: /deletar/i }),
-    buttonEdit: screen.getAllByRole('button', { name: /editar/i }),
-    totalExpenses: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.cash),
+    ButtonAdd: buttonRole(),
   };
 }
 
@@ -53,17 +37,20 @@ export function captureLoginElements() {
   };
 }
 
-export function returnCaptureWalletExpensesElements(expense) {
+export function captureExpensesElements(expense) {
   const { description, tag, method, value, currency, exchangeRates } = expense;
 
-  return captureWalletExpensesElements(
-    { expenseDescription: description,
-      expenseTag: tag,
-      expenseMethod: method,
-      expenseValue: Number(value).toFixed(2),
-      expenseCurrencyName: currenciesFullNames[currency],
-      expenseCurrencyRate: Number(exchangeRates[currency].ask).toFixed(2),
-      expenseCurrencyConvert: conversor(value, exchangeRates[currency].ask)
-        .toFixed(2) },
-  );
+  return {
+    tag: screen.getAllByText(tag),
+    value: screen.getAllByText(Number(value).toFixed(2)),
+    method: screen.getAllByText(method),
+    description: screen.getAllByText(description),
+    currencyRate: screen.getAllByText(Number(exchangeRates[currency].ask).toFixed(2)),
+    currencyName: screen.getAllByText(currenciesFullNames[currency]),
+    currencyConvert: screen.getAllByText(conversor(value, exchangeRates[currency].ask)
+      .toFixed(2)),
+    buttonDelete: screen.getAllByTestId(/delete-btn/),
+    buttonEdit: screen.getAllByTestId(/edit-btn/),
+    totalExpenses: screen.getByTestId(WALLET_INPUTS_IDS_NAMES.cash),
+  };
 }

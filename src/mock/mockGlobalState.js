@@ -1,12 +1,14 @@
 import mockData from './mockData';
 import { removeUSDT, getFullNameCurrencies } from '../services/APIServices';
 
+const EMAIL = 'email@email.com';
+
 export const currenciesArray = Object.keys(removeUSDT(mockData));
 
 export const currenciesFullNames = getFullNameCurrencies(mockData, currenciesArray);
 
-export const expectedFullGlobalStore = {
-  user: { email: 'email@email.com' },
+export const WALLET_GLOBAL_STORE = {
+  user: { email: EMAIL },
   wallet: { currencies: currenciesArray,
     nameCurrencies: currenciesFullNames,
     expenses: [],
@@ -14,8 +16,8 @@ export const expectedFullGlobalStore = {
     idToEdit: 0 },
 };
 
-export const expectedWalletEmptyGlobalStore = {
-  user: { email: 'email@email.com' },
+export const EMAIL_GLOBAL_STORE = {
+  user: { email: EMAIL },
   wallet: { currencies: [],
     nameCurrencies: {},
     expenses: [],
@@ -23,11 +25,16 @@ export const expectedWalletEmptyGlobalStore = {
     idToEdit: 0 },
 };
 
-export const expectedLoginEmptyGlobalStore = {
+export const EMPTY_GLOBAL_STORE = {
   user: { email: '' },
   wallet: { currencies: [],
     nameCurrencies: {},
     expenses: [],
     editor: false,
     idToEdit: 0 },
+};
+
+export const INITIAL_STATE = {
+  initialEntries: ['/carteira'],
+  initialState: { user: { email: EMAIL } },
 };

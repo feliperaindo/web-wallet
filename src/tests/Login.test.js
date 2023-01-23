@@ -1,10 +1,13 @@
 import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../App';
+
 import { renderWithRouterAndRedux } from './helpers/renderWith';
-import { LOGIN_TEST_VALUES, URL_IMG } from '../mock/values';
-import { expectedLoginEmptyGlobalStore } from '../mock/mockGlobalState';
 import { captureLoginElements } from './helpers/captureElements';
+
+import { LOGIN_TEST_VALUES, URL_IMG } from '../mock/values';
+import { EMPTY_GLOBAL_STORE } from '../mock/mockGlobalState';
+
+import App from '../App';
 
 function logIn() {
   const inputs = captureLoginElements();
@@ -24,7 +27,7 @@ describe('Sequência de testes relacionada à renderização do `App.jsx` e pág
   test('Verifica se a `store` é renderizada ao iniciar a aplicação', () => {
     const { store } = renderWithRouterAndRedux(<App />);
 
-    expect(store.getState()).toEqual(expectedLoginEmptyGlobalStore);
+    expect(store.getState()).toEqual(EMPTY_GLOBAL_STORE);
   });
 
   test('Verifica se os componentes da página html são renderizados', () => {
