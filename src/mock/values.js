@@ -1,3 +1,5 @@
+import mockData from './mockData';
+
 export const URL = 'https://economia.awesomeapi.com.br/json/all';
 
 export const URL_IMG = 'https://pngimg.com/uploads/free/free_PNG90775.png';
@@ -31,6 +33,16 @@ export const VALUES_TO_TEST = {
     PaymentValue: 'Dinheiro',
     TagValue: 'Transporte',
   },
+};
+
+export const NEW_EXPENSE = {
+  value: '10',
+  description: 'Mouse',
+  currency: 'DOGE',
+  method: 'Cartão de crédito',
+  tag: 'Trabalho',
+  id: 2,
+  exchangeRates: mockData,
 };
 
 export const WALLET_INPUTS_IDS_NAMES = {

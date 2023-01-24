@@ -5,12 +5,11 @@ import { renderWithRouterAndRedux } from './helpers/renderWith';
 import { captureExpensesElements, captureWalletElements } from './helpers/captureElements';
 import { editExpenseToTest, EXPENSES, fullGlobalStorage } from './helpers/PagesInteractions';
 
-import mockData from '../mock/mockData';
 import fetchMock from '../mock/fetchMock';
-import { VALUES_TO_TEST } from '../mock/values';
-import { WALLET_GLOBAL_STORE } from '../mock/mockGlobalState';
+import { NEW_EXPENSE, VALUES_TO_TEST } from '../mock/values';
+import { currenciesFullNames, WALLET_GLOBAL_STORE } from '../mock/mockGlobalState';
 
-import { calculatorFunction } from '../services/Calculator';
+import { calculatorFunction, conversor } from '../services/Calculator';
 
 import Wallet from '../pages/Wallet';
 
@@ -95,17 +94,7 @@ describe('Sequência de testes acerca da funcionalidade de edição da aplicaç�
   test('Verifica se após a edição de uma despesa ela é atualizada no estado global', () => {
     const globalStateWithEditElement = JSON.parse(JSON.stringify(WALLET_GLOBAL_STORE));
 
-    const newExpense = {
-      value: '10',
-      description: 'Mouse',
-      currency: 'DOGE',
-      method: 'Cartão de crédito',
-      tag: 'Trabalho',
-      id: 2,
-      exchangeRates: mockData,
-    };
-
-    const newArrayExpenses = [EXPENSES[0], EXPENSES[1], newExpense, EXPENSES[3]];
+    const newArrayExpenses = [EXPENSES[0], EXPENSES[1], NEW_EXPENSE, EXPENSES[3]];
 
     globalStateWithEditElement.wallet.expenses = newArrayExpenses;
     globalStateWithEditElement.wallet.idToEdit = 2;
@@ -142,21 +131,30 @@ describe('Sequência de testes acerca da funcionalidade de edição da aplicaç�
   });
 
   test('Verifica se ao terminar a edição da despesa a página é atualizada com as novas informações', () => {
+    const { description, tag, method, value, currency, exchangeRates } = NEW_EXPENSE;
+
     renderWithRouterAndRedux(<Wallet />, fullGlobalStorage());
 
     editExpenseToTest(2);
 
-    expect(inputs.description[0]).not.toBeInTheDocument();
-    expect(inputs.tag[1]).not.toBeInTheDocument();
-    expect(inputs.value[0]).not.toBeInTheDocument();
-    expect(inputs.currencyName[0]).not.toBeInTheDocument();
-    expect(inputs.currencyRate[0]).not.toBeInTheDocument();
-    expect(inputs.currencyConvert[0]).not.toBeInTheDocument();
-    expect(inputs.method[1]).not.toBeInTheDocument();
-    expect(inputs.buttonDelete[2]).not.toBeInTheDocument();
-    expect(inputs.buttonEdit[2]).not.toBeInTheDocument();
+    const expensesInputs = captureExpensesElements(NEW_EXPENSE);
 
-    expect(inputs.totalExpenses)
-      .toHaveTextContent(calculatorFunction([EXPENSES[0], EXPENSES[1], EXPENSES[3]]));
+    expect(expensesInputs.tag[1]).toHaveTextContent(tag);
+    expect(expensesInputs.value[0]).toHaveTextContent(value);
+    expect(expensesInputs.method[1]).toHaveTextContent(method);
+    expect(expensesInputs.description[0]).toHaveTextContent(description);
+    expect(expensesInputs.currencyRate[0])
+      .toHaveTextContent(Number(exchangeRates[currency].ask).toFixed(2));
+    expect(expensesInputs.currencyName[0])
+      .toHaveTextContent(currenciesFullNames[currency]);
+    expect(expensesInputs.currencyConvert[0])
+      .toHaveTextContent(conversor(value, exchangeRates[currency].ask).toFixed(2));
+
+    expect(expensesInputs.buttonDelete).toHaveLength(4);
+    expect(expensesInputs.buttonEdit).toHaveLength(4);
+
+    expect(expensesInputs.totalExpenses)
+      .toHaveTextContent(calculatorFunction([
+        EXPENSES[0], EXPENSES[1], NEW_EXPENSE, EXPENSES[3]]));
   });
 });
